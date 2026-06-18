@@ -1,0 +1,673 @@
+/* =============================================
+   URJA UPGRADE — ROCKET LAUNCH STYLESHEET
+   No gradients. No purple.
+   ============================================= */
+
+:root {
+  --cyan:   #00ffd5;
+  --blue:   #0066ff;
+  --orange: #ff5500;
+  --white:  #ffffff;
+  --bg:     #04060d;
+  --card:   #080d18;
+  --border: #111d30;
+  --dim:    #1e3050;
+  --sub:    #7a90aa;
+  --fh: 'Space Grotesk', sans-serif;
+  --fd: 'Rajdhani', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  font-family: var(--fh);
+  color: var(--white);
+}
+
+.hidden { display: none !important; }
+
+/* =============================================
+   LAUNCH SCREEN
+   ============================================= */
+.launch-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  overflow: hidden;
+  z-index: 10;
+}
+
+/* Dot grid background */
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(0,255,213,0.05) 1px, transparent 1px);
+  background-size: 46px 46px;
+  pointer-events: none;
+}
+
+/* ── SPACE BACKGROUND (Moon + Stars) ── */
+.space-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;          /* always behind content */
+  overflow: hidden;
+}
+
+/* Large transparent moon — default small (launch screen) */
+.moon-bg {
+  position: absolute;
+  top: -80px;
+  right: -60px;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  background: rgba(200, 210, 240, 0.04);
+  border: 1px solid rgba(200, 215, 255, 0.07);
+  animation: moonFloat 8s infinite ease-in-out;
+}
+
+/* INITIATIVES: Moon is HUGE, centred, realistic — "rocket arrived at moon" */
+.initiatives-screen .moon-bg {
+  width: 1100px;
+  height: 1100px;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  transform: translate(-50%, -50%);
+  /* Realistic lunar surface: slightly lit from top-right */
+  background: rgba(195, 208, 240, 0.045);
+  border: 1px solid rgba(210, 225, 255, 0.12);
+  /* Outer atmosphere glow + deep inner shading + lit edge shimmer */
+  box-shadow:
+    0 0 140px 50px rgba(200, 215, 255, 0.035),
+    0 0 320px 100px rgba(200, 215, 255, 0.015),
+    inset -100px -100px 180px rgba(0,   0,  15, 0.55), /* unlit lunar shadow */
+    inset  40px  40px  100px rgba(225, 238, 255, 0.06);  /* lit limb edge */
+  animation: moonGlowPulse 8s infinite ease-in-out;
+  pointer-events: none;
+}
+
+/* Lit crescent shimmer */
+.initiatives-screen .moon-bg::before {
+  content: '';
+  position: absolute;
+  top: 10%; left: 10%;
+  width: 80%; height: 80%;
+  border-radius: 50%;
+  border: 1px solid rgba(230, 240, 255, 0.05);
+  box-shadow: inset 30px 30px 80px rgba(220, 235, 255, 0.04);
+}
+
+/* Inner surface ring */
+.initiatives-screen .moon-bg::after {
+  content: '';
+  position: absolute;
+  top: 25%; left: 25%;
+  width: 50%; height: 50%;
+  border-radius: 50%;
+  border: 1px solid rgba(200, 215, 255, 0.04);
+}
+
+@keyframes moonGlowPulse {
+  0%,100% { box-shadow: 0 0 140px 50px rgba(200,215,255,0.035), 0 0 320px 100px rgba(200,215,255,0.015), inset -100px -100px 180px rgba(0,0,15,0.55), inset 40px 40px 100px rgba(225,238,255,0.06); }
+  50%      { box-shadow: 0 0 180px 70px rgba(200,215,255,0.055), 0 0 380px 120px rgba(200,215,255,0.025), inset -100px -100px 180px rgba(0,0,15,0.55), inset 40px 40px 100px rgba(225,238,255,0.08); }
+}
+
+@keyframes moonFloat {
+  0%,100% { transform: translateY(0px);  }
+  50%      { transform: translateY(12px); }
+}
+
+/* Moon craters */
+.moon-crater {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(200, 215, 255, 0.10);
+  background: rgba(150, 165, 200, 0.03);
+}
+/* Default crater sizes */
+.mc1 { width: 70px;  height: 70px;  top: 60px;  left: 80px;  }
+.mc2 { width: 40px;  height: 40px;  top: 140px; left: 170px; }
+.mc3 { width: 28px;  height: 28px;  top: 55px;  left: 195px; }
+.mc4 { width: 18px;  height: 18px;  top: 200px; left: 90px;  }
+.mc5 { display: none; }
+
+/* Realistic scaled craters for the big initiatives moon */
+.initiatives-screen .mc1 { width: 220px; height: 220px; top: 180px; left: 240px; opacity: 0.85; }
+.initiatives-screen .mc2 { width: 130px; height: 130px; top: 400px; left: 520px; opacity: 0.75; }
+.initiatives-screen .mc3 { width:  80px; height:  80px; top: 160px; left: 600px; opacity: 0.65; }
+.initiatives-screen .mc4 { width:  50px; height:  50px; top: 620px; left: 270px; opacity: 0.55; }
+.initiatives-screen .mc5 { display: block; width: 35px; height: 35px; top: 520px; left: 700px; opacity: 0.65; }
+/* Extra craters depth shading */
+.initiatives-screen .mc1 { box-shadow: inset 8px 8px 25px rgba(0,0,20,0.35), inset -5px -5px 15px rgba(220,230,255,0.08); }
+.initiatives-screen .mc2 { box-shadow: inset 6px 6px 18px rgba(0,0,20,0.3); }
+.initiatives-screen .mc3 { box-shadow: inset 4px 4px 12px rgba(0,0,20,0.25); }
+
+/* Stars */
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: #ffffff;
+  animation: starTwinkle ease-in-out infinite;
+}
+
+/* Varied sizes */
+.star:nth-child(odd)         { width: 1px; height: 1px; opacity: 0.4; }
+.star:nth-child(3n)          { width: 2px; height: 2px; opacity: 0.6; }
+.star:nth-child(7n)          { width: 3px; height: 3px; opacity: 0.5; }
+
+/* Positions — scattered across viewport using fixed % values */
+.s1  { top:  5%; left: 10%; } .s2  { top:  8%; left: 32%; }
+.s3  { top:  3%; left: 55%; } .s4  { top: 12%; left: 78%; }
+.s5  { top: 18%; left: 22%; } .s6  { top: 22%; left: 65%; }
+.s7  { top:  6%; left: 88%; } .s8  { top: 28%; left: 42%; }
+.s9  { top: 35%; left: 15%; } .s10 { top: 40%; left: 82%; }
+.s11 { top: 15%; left: 48%; } .s12 { top: 45%; left: 28%; }
+.s13 { top: 50%; left: 72%; } .s14 { top: 55%; left:  8%; }
+.s15 { top: 60%; left: 55%; } .s16 { top: 65%; left: 35%; }
+.s17 { top: 70%; left: 90%; } .s18 { top: 75%; left: 18%; }
+.s19 { top: 80%; left: 62%; } .s20 { top: 85%; left: 45%; }
+.s21 { top: 90%; left: 25%; } .s22 { top: 92%; left: 75%; }
+.s23 { top: 95%; left: 50%; } .s24 { top:  2%; left: 70%; }
+.s25 { top: 25%; left:  5%; } .s26 { top: 30%; left: 95%; }
+.s27 { top: 42%; left: 58%; } .s28 { top: 48%; left: 12%; }
+.s29 { top: 52%; left: 38%; } .s30 { top: 58%; left: 85%; }
+.s31 { top: 68%; left: 48%; } .s32 { top: 72%; left:  2%; }
+.s33 { top: 78%; left: 30%; } .s34 { top: 82%; left: 68%; }
+.s35 { top: 88%; left: 15%; } .s36 { top: 94%; left: 88%; }
+.s37 { top: 10%; left: 38%; } .s38 { top: 20%; left: 92%; }
+.s39 { top: 33%; left: 68%; } .s40 { top: 38%; left: 22%; }
+.s41 { top: 62%; left: 10%; } .s42 { top: 44%; left: 45%; }
+.s43 { top: 15%; left:  2%; } .s44 { top: 76%; left: 78%; }
+.s45 { top: 55%; left: 20%; } .s46 { top: 85%; left: 92%; }
+.s47 { top: 97%; left: 35%; } .s48 { top:  1%; left: 20%; }
+.s49 { top: 48%; left: 98%; } .s50 { top: 30%; left: 50%; }
+
+/* Varied twinkle timings */
+.star:nth-child(1n)  { animation-duration: 2.1s; animation-delay: 0.0s; }
+.star:nth-child(2n)  { animation-duration: 3.4s; animation-delay: 0.5s; }
+.star:nth-child(3n)  { animation-duration: 1.8s; animation-delay: 1.1s; }
+.star:nth-child(4n)  { animation-duration: 4.2s; animation-delay: 0.3s; }
+.star:nth-child(5n)  { animation-duration: 2.7s; animation-delay: 1.8s; }
+.star:nth-child(6n)  { animation-duration: 3.1s; animation-delay: 0.8s; }
+.star:nth-child(7n)  { animation-duration: 2.4s; animation-delay: 2.2s; }
+.star:nth-child(8n)  { animation-duration: 5.0s; animation-delay: 0.1s; }
+.star:nth-child(9n)  { animation-duration: 1.5s; animation-delay: 1.4s; }
+.star:nth-child(10n) { animation-duration: 3.8s; animation-delay: 0.6s; }
+
+@keyframes starTwinkle {
+  0%,100% { opacity: 0.08; transform: scale(1);   }
+  50%      { opacity: 0.75; transform: scale(1.4); }
+}
+
+
+
+/* Speed lines layer */
+.lines-layer {
+  position: absolute; inset: 0;
+  pointer-events: none; overflow: hidden;
+}
+.line {
+  position: absolute;
+  top: -200px; width: 1px;
+  background: var(--cyan); opacity: 0;
+  animation: lineFall linear forwards;
+}
+@keyframes lineFall {
+  0%   { transform: translateY(0);     opacity: 0; }
+  8%   { opacity: 0.55; }
+  92%  { opacity: 0.55; }
+  100% { transform: translateY(130vh); opacity: 0; }
+}
+
+/* Status text */
+.status-text {
+  position: absolute;
+  top: 34px; left: 0; right: 0;
+  text-align: center;
+  font-family: var(--fh);
+  font-size: 0.88rem;
+  letter-spacing: 3px;
+  color: var(--sub);
+  text-transform: uppercase;
+  transition: color 0.5s;
+  z-index: 20;
+}
+
+/* Watermark number */
+.watermark {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--fd);
+  font-size: clamp(160px, 28vw, 400px);
+  font-weight: 900;
+  color: rgba(0,255,213,0.025);
+  letter-spacing: -8px;
+  pointer-events: none; user-select: none;
+  z-index: 5; transition: color 0.5s;
+}
+.watermark.hot { color: rgba(255,85,0,0.03); }
+
+/* Progress bar */
+.prog-track {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 3px; background: rgba(255,255,255,0.05); z-index: 40;
+}
+.prog-fill {
+  height: 100%; width: 0%;
+  background: var(--cyan);
+  box-shadow: 0 0 12px var(--cyan);
+  transition: background 0.4s;
+}
+.prog-fill.hot { background: var(--orange); box-shadow: 0 0 18px var(--orange); }
+
+/* =============================================
+   ROCKET WRAP  (JS owns: left, bottom, width)
+   ============================================= */
+.rocket-wrap {
+  position: absolute;
+  z-index: 30;
+  /* NO css left/bottom/transform — all JS */
+}
+
+/* Glow halo (pulses during charge) */
+.rocket-halo {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 130%; height: 130%;
+  border-radius: 50%;
+  background: rgba(0,255,213,0);
+  transition: background 0.6s;
+  pointer-events: none;
+  z-index: 0;
+}
+.rocket-wrap.charging .rocket-halo {
+  background: rgba(0,255,213,0.06);
+  animation: haloBreath 1.2s infinite ease-in-out;
+}
+.rocket-wrap.overclock .rocket-halo {
+  background: rgba(255,85,0,0.08);
+  animation: haloBreath 0.5s infinite ease-in-out;
+}
+@keyframes haloBreath {
+  0%,100% { transform: translate(-50%,-50%) scale(1);   }
+  50%      { transform: translate(-50%,-50%) scale(1.12); }
+}
+
+/* SVG fills */
+.rocket-svg { width: 100%; height: 100%; overflow: visible; }
+
+/* Body */
+.body {
+  fill: #0d1f3a;
+  stroke: var(--cyan); stroke-width: 1.5;
+}
+.rocket-wrap.overclock .body { stroke: var(--orange); }
+
+.body-stripe { fill: none; stroke: var(--dim); stroke-width: 0.5; }
+
+/* Nose cone */
+.nose-cone {
+  fill: #102848;
+  stroke: var(--cyan); stroke-width: 1.5;
+}
+.rocket-wrap.overclock .nose-cone { stroke: var(--orange); }
+
+.nose-tip { fill: var(--cyan); opacity: 0.6; }
+.rocket-wrap.overclock .nose-tip { fill: var(--orange); }
+
+/* Window */
+.window-outer { fill: #0a1830; stroke: var(--cyan); stroke-width: 1.5; }
+.window-inner { fill: #162f55; stroke: var(--blue); stroke-width: 1; }
+.window-shine { fill: rgba(255,255,255,0.55); }
+
+.rocket-wrap.charging .window-inner {
+  fill: rgba(0,100,255,0.4);
+  animation: winGlow 1s infinite ease-in-out;
+}
+.rocket-wrap.overclock .window-inner {
+  fill: rgba(255,85,0,0.35);
+  animation: winGlow 0.4s infinite ease-in-out;
+}
+@keyframes winGlow {
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0.4; }
+}
+
+/* Fins */
+.fin {
+  fill: #0b1c35;
+  stroke: var(--cyan); stroke-width: 1.2;
+}
+.rocket-wrap.overclock .fin { stroke: var(--orange); }
+.fin-line { stroke: var(--dim); stroke-width: 0.6; }
+
+/* Thrusters */
+.thruster { fill: #0a1526; stroke: var(--dim); stroke-width: 0.8; }
+.rocket-wrap.charging .thruster { stroke: var(--cyan); }
+
+/* Nozzle */
+.nozzle { fill: #061220; stroke: var(--blue); stroke-width: 1.2; }
+
+/* Panel lines */
+.panel-line { stroke: var(--dim); stroke-width: 0.5; }
+
+/* ── FLAMES ── */
+.flame { transition: opacity 0.3s; }
+
+/* Outer flame — orange, wide */
+.flame-outer {
+  fill: var(--orange);
+  opacity: 0;
+  transform-origin: 50px 222px;
+}
+/* Mid flame — white/cyan */
+.flame-mid {
+  fill: #ffe8d0;
+  opacity: 0;
+  transform-origin: 50px 222px;
+}
+/* Core — bright white */
+.flame-core {
+  fill: #ffffff;
+  opacity: 0;
+  transform-origin: 50px 222px;
+}
+/* Hot centre */
+.flame-hot {
+  fill: #ffffff;
+  opacity: 0;
+  transform-origin: 50px 226px;
+}
+
+/* Flames appear during charging */
+.rocket-wrap.charging .flame-outer {
+  opacity: 0.7;
+  animation: flickerOuter 0.22s infinite ease-in-out;
+}
+.rocket-wrap.charging .flame-mid {
+  opacity: 0.85;
+  animation: flickerMid 0.18s infinite ease-in-out;
+}
+.rocket-wrap.charging .flame-core {
+  opacity: 0.9;
+  animation: flickerCore 0.14s infinite ease-in-out;
+}
+.rocket-wrap.charging .flame-hot {
+  opacity: 0.95;
+  animation: flickerHot 0.1s infinite ease-in-out;
+}
+
+/* Overclock — bigger brighter flames */
+.rocket-wrap.overclock .flame-outer {
+  opacity: 1;
+  animation: flickerOuter 0.1s infinite ease-in-out;
+  transform: scaleY(1.5);
+}
+.rocket-wrap.overclock .flame-mid {
+  opacity: 1;
+  animation: flickerMid 0.08s infinite ease-in-out;
+  transform: scaleY(1.4);
+}
+.rocket-wrap.overclock .flame-core {
+  opacity: 1;
+  animation: flickerCore 0.07s infinite ease-in-out;
+  transform: scaleY(1.3);
+}
+.rocket-wrap.overclock .flame-hot { opacity: 1; }
+
+@keyframes flickerOuter {
+  0%,100% { transform: scaleX(1)   scaleY(1);    }
+  33%      { transform: scaleX(1.1) scaleY(0.88); }
+  66%      { transform: scaleX(0.9) scaleY(1.1);  }
+}
+@keyframes flickerMid {
+  0%,100% { transform: scaleX(1)   scaleY(1);    }
+  40%      { transform: scaleX(0.92) scaleY(1.12); }
+  70%      { transform: scaleX(1.08) scaleY(0.9);  }
+}
+@keyframes flickerCore {
+  0%,100% { transform: scaleY(1); }
+  50%      { transform: scaleY(1.15); }
+}
+@keyframes flickerHot {
+  0%,100% { opacity: 0.95; transform: scale(1); }
+  50%      { opacity: 0.6;  transform: scale(0.8); }
+}
+
+/* ── EXHAUST PARTICLES (JS-spawned) ── */
+.exhaust-particles {
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 1px; height: 1px;
+  z-index: 1; pointer-events: none;
+}
+.ember {
+  position: absolute;
+  border-radius: 50%;
+  animation: emberFly linear forwards;
+  transform-origin: center;
+}
+@keyframes emberFly {
+  0%   { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--ex), var(--ey)) scale(0); opacity: 0; }
+}
+
+/* =============================================
+   INITIATIVES SCREEN — PHASE 2
+   ============================================= */
+.initiatives-screen {
+  position: fixed; inset: 0;
+  background: var(--bg);
+  overflow-y: auto;
+  z-index: 5;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.initiatives-screen.visible { opacity: 1; transform: translateY(0); }
+
+.init-inner {
+  position: relative;
+  z-index: 10;         /* Ensures cards sit on top of background stars/moon */
+  width: 90%; max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 0 64px;
+  display: flex; flex-direction: column; gap: 34px;
+}
+
+/* Header */
+.init-header {
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 18px;
+  font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase;
+}
+.header-left { display: flex; align-items: center; gap: 10px; color: var(--cyan); font-weight: 700; }
+.header-right { color: var(--sub); }
+
+.dot-pulse {
+  width: 8px; height: 8px;
+  background: var(--cyan); border-radius: 50%;
+  animation: dotGlow 1.8s infinite;
+}
+@keyframes dotGlow {
+  0%,100% { box-shadow: 0 0 0 0 rgba(0,255,213,0.4); }
+  50%      { box-shadow: 0 0 10px 3px rgba(0,255,213,0.4); }
+}
+
+/* Hero */
+.hero {
+  text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.check-ring {
+  width: 52px; height: 52px;
+  border: 2px solid var(--cyan); border-radius: 50%;
+  color: var(--cyan);
+  display: flex; align-items: center; justify-content: center;
+  animation: popIn 0.5s cubic-bezier(0.175,0.885,0.32,1.275) both;
+}
+.check-ring svg { width: 26px; height: 26px; }
+@keyframes popIn {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+.hero h1 {
+  font-family: var(--fh); font-size: 2.4rem;
+  letter-spacing: 5px; font-weight: 800;
+}
+.hero p { font-size: 1.05rem; color: var(--sub); max-width: 700px; line-height: 1.6; }
+
+/* Cards Grid */
+.cards-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 20px;
+}
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  padding: 24px 22px 20px;
+  position: relative; display: flex; flex-direction: column; gap: 12px;
+  transition: transform 0.28s, box-shadow 0.28s, border-color 0.28s;
+  animation: cardIn 0.5s ease both;
+}
+.card:nth-child(1){animation-delay:.05s}
+.card:nth-child(2){animation-delay:.12s}
+.card:nth-child(3){animation-delay:.19s}
+.card:nth-child(4){animation-delay:.26s}
+.card:nth-child(5){animation-delay:.33s}
+.card:nth-child(6){animation-delay:.40s}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.card:hover { transform: translateY(-7px); }
+
+.c-top-bar {
+  position: absolute; top: -1px; left: 14px; right: 14px; height: 2px;
+}
+.c-bot-bar {
+  position: absolute; bottom: -1px; left: 0; height: 2px; width: 0;
+  transition: width 0.4s ease;
+}
+.card:hover .c-bot-bar { width: 100%; }
+
+/* Accent themes */
+.c-cyan .c-top-bar,.c-cyan .c-bot-bar{background:var(--cyan);}
+.c-cyan .c-tag{color:var(--cyan);border-color:var(--cyan);}
+.c-cyan .out-val{color:var(--cyan);}
+.c-cyan:hover{box-shadow:0 12px 28px rgba(0,255,213,0.12);border-color:rgba(0,255,213,0.25);}
+
+.c-blue .c-top-bar,.c-blue .c-bot-bar{background:var(--blue);}
+.c-blue .c-tag{color:var(--blue);border-color:var(--blue);}
+.c-blue .out-val{color:#5599ff;}
+.c-blue:hover{box-shadow:0 12px 28px rgba(0,102,255,0.15);border-color:rgba(0,102,255,0.25);}
+
+.c-orange .c-top-bar,.c-orange .c-bot-bar{background:var(--orange);}
+.c-orange .c-tag{color:var(--orange);border-color:var(--orange);}
+.c-orange .out-val{color:var(--orange);}
+.c-orange:hover{box-shadow:0 12px 28px rgba(255,85,0,0.15);border-color:rgba(255,85,0,0.25);}
+
+.c-row { display: flex; justify-content: space-between; align-items: center; }
+.c-icon { font-size: 1.5rem; }
+.c-tag {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 1.5px;
+  border: 1px solid; padding: 2px 7px; border-radius: 2px;
+}
+.card h2 { font-size: 1.1rem; font-weight: 700; line-height: 1.3; }
+.card p  { font-size: 0.88rem; color: var(--sub); line-height: 1.55; flex: 1; }
+.c-outcome { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px; display: flex; flex-direction: column; gap: 4px; }
+.out-lbl { font-size: 0.64rem; letter-spacing: 1.5px; color: var(--dim); font-weight: 700; }
+.out-val { font-size: 0.86rem; font-weight: 600; }
+
+/* Banner */
+.banner {
+  background: var(--orange); padding: 22px 30px;
+  display: flex; align-items: center;
+}
+.banner-inner { display: flex; align-items: center; gap: 20px; }
+.banner-pill {
+  background: #fff; color: var(--orange);
+  font-weight: 800; font-size: 0.68rem; letter-spacing: 2px;
+  padding: 4px 10px; border-radius: 2px; white-space: nowrap;
+}
+.banner p { font-size: 1.15rem; font-weight: 600; color: #fff; line-height: 1.4; }
+.banner strong { font-weight: 800; }
+
+/* Footer */
+.footer-row { display: flex; justify-content: center; }
+.replay-btn {
+  background: transparent; border: 1px dashed var(--border);
+  color: var(--sub); font-family: var(--fh);
+  font-size: 0.8rem; letter-spacing: 2px;
+  padding: 11px 26px; cursor: pointer; transition: all 0.25s;
+}
+.replay-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+/* ── MOON CARD ───────────────────────────────────── */
+.c-moon {
+  background: #08080f;
+  border-color: #2a2d3e;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Crater decorations — subtle raised circles */
+.moon-craters {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.crater {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(180, 190, 220, 0.12);
+  background: rgba(140, 150, 180, 0.04);
+}
+.cr-1 { width: 48px; height: 48px; top: 12px;  right: 18px; }
+.cr-2 { width: 28px; height: 28px; top: 44px;  right: 48px; }
+.cr-3 { width: 18px; height: 18px; bottom: 55px; right: 30px; }
+
+/* Top/bottom accent bars — silver */
+.c-moon .c-top-bar,
+.c-moon .c-bot-bar { background: #9aa5c0; }
+
+/* Tag — silver */
+.c-moon .c-tag { color: #9aa5c0; border-color: #9aa5c0; }
+
+/* Outcome value — silver-white glow */
+.c-moon .out-val { color: #c8d0e8; }
+
+/* Hover glow — silvery moonlight */
+.c-moon:hover {
+  box-shadow: 0 12px 32px rgba(150, 160, 200, 0.14);
+  border-color: rgba(160, 170, 210, 0.35);
+  background: #09090f;
+}
+
+/* Animated moon shimmer on top */
+.c-moon::before {
+  content: '';
+  position: absolute;
+  top: -30px; left: -30px;
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: rgba(180, 190, 230, 0.03);
+  animation: moonGlow 4s infinite ease-in-out;
+  pointer-events: none;
+}
+@keyframes moonGlow {
+  0%,100% { transform: scale(1);   opacity: 0.5; }
+  50%      { transform: scale(1.2); opacity: 1; }
+}
+
+/* Responsive */
+
+@media (max-width:900px) { .cards-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width:600px) { .cards-grid { grid-template-columns: 1fr; } .hero h1 { font-size:1.6rem; } }
