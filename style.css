@@ -1,6 +1,7 @@
 /* =============================================
    URJA UPGRADE — ROCKET LAUNCH STYLESHEET
-   No gradients. No purple.
+   Scroll-based layout. Stars fixed to viewport.
+   Each slide fits in one viewport height.
    ============================================= */
 
 :root {
@@ -19,9 +20,14 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html, body {
-  width: 100%; height: 100%;
-  overflow: hidden;
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  width: 100%;
+  min-height: 100%;
+  overflow-y: hidden; /* JS enables after animation */
   background: var(--bg);
   font-family: var(--fh);
   color: var(--white);
@@ -30,70 +36,37 @@ html, body {
 .hidden { display: none !important; }
 
 /* =============================================
-   LAUNCH SCREEN
+   SPACE BACKGROUND — fixed to viewport always
    ============================================= */
-.launch-screen {
+.space-bg {
   position: fixed;
   inset: 0;
-  background: var(--bg);
-  overflow: hidden;
-  z-index: 10;
-}
-
-/* Dot grid background */
-.bg-grid {
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(circle, rgba(0,255,213,0.05) 1px, transparent 1px);
-  background-size: 46px 46px;
   pointer-events: none;
-}
-
-/* ── SPACE BACKGROUND (Moon + Stars) ── */
-.space-bg {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;          /* always behind content */
+  z-index: 1;
   overflow: hidden;
 }
 
-/* Large transparent moon — default small (launch screen) */
+/* Large moon — centered in viewport, always big */
 .moon-bg {
   position: absolute;
-  top: -80px;
-  right: -60px;
-  width: 340px;
-  height: 340px;
-  border-radius: 50%;
-  background: rgba(200, 210, 240, 0.04);
-  border: 1px solid rgba(200, 215, 255, 0.07);
-  animation: moonFloat 8s infinite ease-in-out;
-}
-
-/* INITIATIVES: Moon is HUGE, centred, realistic — "rocket arrived at moon" */
-.initiatives-screen .moon-bg {
   width: 1100px;
   height: 1100px;
   top: 50%;
   left: 50%;
-  right: auto;
   transform: translate(-50%, -50%);
-  /* Realistic lunar surface: slightly lit from top-right */
+  border-radius: 50%;
   background: rgba(195, 208, 240, 0.045);
   border: 1px solid rgba(210, 225, 255, 0.12);
-  /* Outer atmosphere glow + deep inner shading + lit edge shimmer */
   box-shadow:
     0 0 140px 50px rgba(200, 215, 255, 0.035),
     0 0 320px 100px rgba(200, 215, 255, 0.015),
-    inset -100px -100px 180px rgba(0,   0,  15, 0.55), /* unlit lunar shadow */
-    inset  40px  40px  100px rgba(225, 238, 255, 0.06);  /* lit limb edge */
+    inset -100px -100px 180px rgba(0,   0,  15, 0.55),
+    inset  40px  40px  100px rgba(225, 238, 255, 0.06);
   animation: moonGlowPulse 8s infinite ease-in-out;
   pointer-events: none;
 }
 
-/* Lit crescent shimmer */
-.initiatives-screen .moon-bg::before {
+.moon-bg::before {
   content: '';
   position: absolute;
   top: 10%; left: 10%;
@@ -103,8 +76,7 @@ html, body {
   box-shadow: inset 30px 30px 80px rgba(220, 235, 255, 0.04);
 }
 
-/* Inner surface ring */
-.initiatives-screen .moon-bg::after {
+.moon-bg::after {
   content: '';
   position: absolute;
   top: 25%; left: 25%;
@@ -118,11 +90,6 @@ html, body {
   50%      { box-shadow: 0 0 180px 70px rgba(200,215,255,0.055), 0 0 380px 120px rgba(200,215,255,0.025), inset -100px -100px 180px rgba(0,0,15,0.55), inset 40px 40px 100px rgba(225,238,255,0.08); }
 }
 
-@keyframes moonFloat {
-  0%,100% { transform: translateY(0px);  }
-  50%      { transform: translateY(12px); }
-}
-
 /* Moon craters */
 .moon-crater {
   position: absolute;
@@ -130,23 +97,14 @@ html, body {
   border: 1px solid rgba(200, 215, 255, 0.10);
   background: rgba(150, 165, 200, 0.03);
 }
-/* Default crater sizes */
-.mc1 { width: 70px;  height: 70px;  top: 60px;  left: 80px;  }
-.mc2 { width: 40px;  height: 40px;  top: 140px; left: 170px; }
-.mc3 { width: 28px;  height: 28px;  top: 55px;  left: 195px; }
-.mc4 { width: 18px;  height: 18px;  top: 200px; left: 90px;  }
-.mc5 { display: none; }
-
-/* Realistic scaled craters for the big initiatives moon */
-.initiatives-screen .mc1 { width: 220px; height: 220px; top: 180px; left: 240px; opacity: 0.85; }
-.initiatives-screen .mc2 { width: 130px; height: 130px; top: 400px; left: 520px; opacity: 0.75; }
-.initiatives-screen .mc3 { width:  80px; height:  80px; top: 160px; left: 600px; opacity: 0.65; }
-.initiatives-screen .mc4 { width:  50px; height:  50px; top: 620px; left: 270px; opacity: 0.55; }
-.initiatives-screen .mc5 { display: block; width: 35px; height: 35px; top: 520px; left: 700px; opacity: 0.65; }
-/* Extra craters depth shading */
-.initiatives-screen .mc1 { box-shadow: inset 8px 8px 25px rgba(0,0,20,0.35), inset -5px -5px 15px rgba(220,230,255,0.08); }
-.initiatives-screen .mc2 { box-shadow: inset 6px 6px 18px rgba(0,0,20,0.3); }
-.initiatives-screen .mc3 { box-shadow: inset 4px 4px 12px rgba(0,0,20,0.25); }
+.mc1 { width: 220px; height: 220px; top: 180px; left: 240px; opacity: 0.85;
+  box-shadow: inset 8px 8px 25px rgba(0,0,20,0.35), inset -5px -5px 15px rgba(220,230,255,0.08); }
+.mc2 { width: 130px; height: 130px; top: 400px; left: 520px; opacity: 0.75;
+  box-shadow: inset 6px 6px 18px rgba(0,0,20,0.3); }
+.mc3 { width:  80px; height:  80px; top: 160px; left: 600px; opacity: 0.65;
+  box-shadow: inset 4px 4px 12px rgba(0,0,20,0.25); }
+.mc4 { width:  50px; height:  50px; top: 620px; left: 270px; opacity: 0.55; }
+.mc5 { width:  35px; height:  35px; top: 520px; left: 700px; opacity: 0.65; }
 
 /* Stars */
 .star {
@@ -155,13 +113,11 @@ html, body {
   background: #ffffff;
   animation: starTwinkle ease-in-out infinite;
 }
+.star:nth-child(odd)  { width: 1px; height: 1px; opacity: 0.4; }
+.star:nth-child(3n)   { width: 2px; height: 2px; opacity: 0.6; }
+.star:nth-child(7n)   { width: 3px; height: 3px; opacity: 0.5; }
 
-/* Varied sizes */
-.star:nth-child(odd)         { width: 1px; height: 1px; opacity: 0.4; }
-.star:nth-child(3n)          { width: 2px; height: 2px; opacity: 0.6; }
-.star:nth-child(7n)          { width: 3px; height: 3px; opacity: 0.5; }
-
-/* Positions — scattered across viewport using fixed % values */
+/* Star positions */
 .s1  { top:  5%; left: 10%; } .s2  { top:  8%; left: 32%; }
 .s3  { top:  3%; left: 55%; } .s4  { top: 12%; left: 78%; }
 .s5  { top: 18%; left: 22%; } .s6  { top: 22%; left: 65%; }
@@ -188,7 +144,7 @@ html, body {
 .s47 { top: 97%; left: 35%; } .s48 { top:  1%; left: 20%; }
 .s49 { top: 48%; left: 98%; } .s50 { top: 30%; left: 50%; }
 
-/* Varied twinkle timings */
+/* Twinkle timings */
 .star:nth-child(1n)  { animation-duration: 2.1s; animation-delay: 0.0s; }
 .star:nth-child(2n)  { animation-duration: 3.4s; animation-delay: 0.5s; }
 .star:nth-child(3n)  { animation-duration: 1.8s; animation-delay: 1.1s; }
@@ -205,7 +161,25 @@ html, body {
   50%      { opacity: 0.75; transform: scale(1.4); }
 }
 
+/* =============================================
+   LAUNCH SCREEN
+   ============================================= */
+.launch-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  overflow: hidden;
+  z-index: 100;
+}
 
+/* Dot grid background */
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(0,255,213,0.05) 1px, transparent 1px);
+  background-size: 46px 46px;
+  pointer-events: none;
+}
 
 /* Speed lines layer */
 .lines-layer {
@@ -267,15 +241,12 @@ html, body {
 .prog-fill.hot { background: var(--orange); box-shadow: 0 0 18px var(--orange); }
 
 /* =============================================
-   ROCKET WRAP  (JS owns: left, bottom, width)
+   ROCKET WRAP
    ============================================= */
 .rocket-wrap {
   position: absolute;
   z-index: 30;
-  /* NO css left/bottom/transform — all JS */
 }
-
-/* Glow halo (pulses during charge) */
 .rocket-halo {
   position: absolute;
   top: 50%; left: 50%;
@@ -296,33 +267,21 @@ html, body {
   animation: haloBreath 0.5s infinite ease-in-out;
 }
 @keyframes haloBreath {
-  0%,100% { transform: translate(-50%,-50%) scale(1);   }
+  0%,100% { transform: translate(-50%,-50%) scale(1);    }
   50%      { transform: translate(-50%,-50%) scale(1.12); }
 }
 
-/* SVG fills */
 .rocket-svg { width: 100%; height: 100%; overflow: visible; }
 
-/* Body */
-.body {
-  fill: #0d1f3a;
-  stroke: var(--cyan); stroke-width: 1.5;
-}
+.body { fill: #0d1f3a; stroke: var(--cyan); stroke-width: 1.5; }
 .rocket-wrap.overclock .body { stroke: var(--orange); }
-
 .body-stripe { fill: none; stroke: var(--dim); stroke-width: 0.5; }
 
-/* Nose cone */
-.nose-cone {
-  fill: #102848;
-  stroke: var(--cyan); stroke-width: 1.5;
-}
+.nose-cone { fill: #102848; stroke: var(--cyan); stroke-width: 1.5; }
 .rocket-wrap.overclock .nose-cone { stroke: var(--orange); }
-
 .nose-tip { fill: var(--cyan); opacity: 0.6; }
 .rocket-wrap.overclock .nose-tip { fill: var(--orange); }
 
-/* Window */
 .window-outer { fill: #0a1830; stroke: var(--cyan); stroke-width: 1.5; }
 .window-inner { fill: #162f55; stroke: var(--blue); stroke-width: 1; }
 .window-shine { fill: rgba(255,255,255,0.55); }
@@ -340,108 +299,37 @@ html, body {
   50%      { opacity: 0.4; }
 }
 
-/* Fins */
-.fin {
-  fill: #0b1c35;
-  stroke: var(--cyan); stroke-width: 1.2;
-}
+.fin { fill: #0b1c35; stroke: var(--cyan); stroke-width: 1.2; }
 .rocket-wrap.overclock .fin { stroke: var(--orange); }
 .fin-line { stroke: var(--dim); stroke-width: 0.6; }
 
-/* Thrusters */
 .thruster { fill: #0a1526; stroke: var(--dim); stroke-width: 0.8; }
 .rocket-wrap.charging .thruster { stroke: var(--cyan); }
 
-/* Nozzle */
 .nozzle { fill: #061220; stroke: var(--blue); stroke-width: 1.2; }
-
-/* Panel lines */
 .panel-line { stroke: var(--dim); stroke-width: 0.5; }
 
-/* ── FLAMES ── */
 .flame { transition: opacity 0.3s; }
+.flame-outer { fill: var(--orange); opacity: 0; transform-origin: 50px 222px; }
+.flame-mid   { fill: #ffe8d0;       opacity: 0; transform-origin: 50px 222px; }
+.flame-core  { fill: #ffffff;       opacity: 0; transform-origin: 50px 222px; }
+.flame-hot   { fill: #ffffff;       opacity: 0; transform-origin: 50px 226px; }
 
-/* Outer flame — orange, wide */
-.flame-outer {
-  fill: var(--orange);
-  opacity: 0;
-  transform-origin: 50px 222px;
-}
-/* Mid flame — white/cyan */
-.flame-mid {
-  fill: #ffe8d0;
-  opacity: 0;
-  transform-origin: 50px 222px;
-}
-/* Core — bright white */
-.flame-core {
-  fill: #ffffff;
-  opacity: 0;
-  transform-origin: 50px 222px;
-}
-/* Hot centre */
-.flame-hot {
-  fill: #ffffff;
-  opacity: 0;
-  transform-origin: 50px 226px;
-}
+.rocket-wrap.charging .flame-outer { opacity: 0.7;  animation: flickerOuter 0.22s infinite ease-in-out; }
+.rocket-wrap.charging .flame-mid   { opacity: 0.85; animation: flickerMid   0.18s infinite ease-in-out; }
+.rocket-wrap.charging .flame-core  { opacity: 0.9;  animation: flickerCore  0.14s infinite ease-in-out; }
+.rocket-wrap.charging .flame-hot   { opacity: 0.95; animation: flickerHot   0.1s  infinite ease-in-out; }
 
-/* Flames appear during charging */
-.rocket-wrap.charging .flame-outer {
-  opacity: 0.7;
-  animation: flickerOuter 0.22s infinite ease-in-out;
-}
-.rocket-wrap.charging .flame-mid {
-  opacity: 0.85;
-  animation: flickerMid 0.18s infinite ease-in-out;
-}
-.rocket-wrap.charging .flame-core {
-  opacity: 0.9;
-  animation: flickerCore 0.14s infinite ease-in-out;
-}
-.rocket-wrap.charging .flame-hot {
-  opacity: 0.95;
-  animation: flickerHot 0.1s infinite ease-in-out;
-}
+.rocket-wrap.overclock .flame-outer { opacity: 1; animation: flickerOuter 0.1s  infinite ease-in-out; transform: scaleY(1.5); }
+.rocket-wrap.overclock .flame-mid   { opacity: 1; animation: flickerMid   0.08s infinite ease-in-out; transform: scaleY(1.4); }
+.rocket-wrap.overclock .flame-core  { opacity: 1; animation: flickerCore  0.07s infinite ease-in-out; transform: scaleY(1.3); }
+.rocket-wrap.overclock .flame-hot   { opacity: 1; }
 
-/* Overclock — bigger brighter flames */
-.rocket-wrap.overclock .flame-outer {
-  opacity: 1;
-  animation: flickerOuter 0.1s infinite ease-in-out;
-  transform: scaleY(1.5);
-}
-.rocket-wrap.overclock .flame-mid {
-  opacity: 1;
-  animation: flickerMid 0.08s infinite ease-in-out;
-  transform: scaleY(1.4);
-}
-.rocket-wrap.overclock .flame-core {
-  opacity: 1;
-  animation: flickerCore 0.07s infinite ease-in-out;
-  transform: scaleY(1.3);
-}
-.rocket-wrap.overclock .flame-hot { opacity: 1; }
+@keyframes flickerOuter { 0%,100% { transform: scaleX(1) scaleY(1); } 33% { transform: scaleX(1.1) scaleY(0.88); } 66% { transform: scaleX(0.9) scaleY(1.1); } }
+@keyframes flickerMid   { 0%,100% { transform: scaleX(1) scaleY(1); } 40% { transform: scaleX(0.92) scaleY(1.12); } 70% { transform: scaleX(1.08) scaleY(0.9); } }
+@keyframes flickerCore  { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(1.15); } }
+@keyframes flickerHot   { 0%,100% { opacity: 0.95; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.8); } }
 
-@keyframes flickerOuter {
-  0%,100% { transform: scaleX(1)   scaleY(1);    }
-  33%      { transform: scaleX(1.1) scaleY(0.88); }
-  66%      { transform: scaleX(0.9) scaleY(1.1);  }
-}
-@keyframes flickerMid {
-  0%,100% { transform: scaleX(1)   scaleY(1);    }
-  40%      { transform: scaleX(0.92) scaleY(1.12); }
-  70%      { transform: scaleX(1.08) scaleY(0.9);  }
-}
-@keyframes flickerCore {
-  0%,100% { transform: scaleY(1); }
-  50%      { transform: scaleY(1.15); }
-}
-@keyframes flickerHot {
-  0%,100% { opacity: 0.95; transform: scale(1); }
-  50%      { opacity: 0.6;  transform: scale(0.8); }
-}
-
-/* ── EXHAUST PARTICLES (JS-spawned) ── */
 .exhaust-particles {
   position: absolute;
   bottom: 0; left: 50%;
@@ -460,23 +348,27 @@ html, body {
   100% { transform: translate(var(--ex), var(--ey)) scale(0); opacity: 0; }
 }
 
+/* Shiver on rocketWrap */
+/* (controlled via JS inline marginLeft/marginTop) */
+
 /* =============================================
-   INITIATIVES SCREEN — PHASE 2
+   MAIN CONTENT — scrollable, shown after animation
    ============================================= */
-.initiatives-screen {
-  position: fixed; inset: 0;
-  background: var(--bg);
-  overflow-y: auto;
-  z-index: 5;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+.main-content {
+  position: relative;
+  z-index: 10;
 }
-.initiatives-screen.visible { opacity: 1; transform: translateY(0); }
+
+/* ── OVERVIEW SECTION ── */
+.overview-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
 
 .init-inner {
   position: relative;
-  z-index: 10;         /* Ensures cards sit on top of background stars/moon */
+  z-index: 10;
   width: 90%; max-width: 1200px;
   margin: 0 auto;
   padding: 50px 0 64px;
@@ -536,6 +428,7 @@ html, body {
   position: relative; display: flex; flex-direction: column; gap: 12px;
   transition: transform 0.28s, box-shadow 0.28s, border-color 0.28s;
   animation: cardIn 0.5s ease both;
+  cursor: pointer;
 }
 .card:nth-child(1){animation-delay:.05s}
 .card:nth-child(2){animation-delay:.12s}
@@ -586,6 +479,19 @@ html, body {
 .out-lbl { font-size: 0.64rem; letter-spacing: 1.5px; color: var(--dim); font-weight: 700; }
 .out-val { font-size: 0.86rem; font-weight: 600; }
 
+/* Slide CTA on cards */
+.slide-cta {
+  font-size: 0.65rem;
+  letter-spacing: 2.5px;
+  font-weight: 700;
+  color: var(--sub);
+  transition: color 0.25s, letter-spacing 0.25s;
+  margin-top: 2px;
+}
+.card:hover .slide-cta { color: var(--cyan); letter-spacing: 3px; }
+.c-blue:hover .slide-cta  { color: #5599ff; }
+.c-orange:hover .slide-cta{ color: var(--orange); }
+
 /* Banner */
 .banner {
   background: var(--orange); padding: 22px 30px;
@@ -601,7 +507,7 @@ html, body {
 .banner strong { font-weight: 800; }
 
 /* Footer */
-.footer-row { display: flex; justify-content: center; }
+.footer-row { display: flex; align-items: center; justify-content: space-between; }
 .replay-btn {
   background: transparent; border: 1px dashed var(--border);
   color: var(--sub); font-family: var(--fh);
@@ -610,64 +516,632 @@ html, body {
 }
 .replay-btn:hover { border-color: var(--cyan); color: var(--cyan); }
 
-/* ── MOON CARD ───────────────────────────────────── */
-.c-moon {
-  background: #08080f;
-  border-color: #2a2d3e;
+.scroll-hint {
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  color: var(--dim);
+  animation: hintPulse 2.5s infinite ease-in-out;
+}
+@keyframes hintPulse {
+  0%,100% { opacity: 0.4; }
+  50%      { opacity: 1; }
+}
+
+/* =============================================
+   DETAIL SLIDES — normal scrollable sections
+   ============================================= */
+.detail-slide {
   position: relative;
-  overflow: hidden;
+  min-height: 100vh;
+  background: transparent; /* stars/moon from fixed spaceBg show through */
+  border-top: 1px solid rgba(255,255,255,0.05);
 }
 
-/* Crater decorations — subtle raised circles */
-.moon-craters {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-.crater {
-  position: absolute;
-  border-radius: 50%;
-  border: 1px solid rgba(180, 190, 220, 0.12);
-  background: rgba(140, 150, 180, 0.04);
-}
-.cr-1 { width: 48px; height: 48px; top: 12px;  right: 18px; }
-.cr-2 { width: 28px; height: 28px; top: 44px;  right: 48px; }
-.cr-3 { width: 18px; height: 18px; bottom: 55px; right: 30px; }
-
-/* Top/bottom accent bars — silver */
-.c-moon .c-top-bar,
-.c-moon .c-bot-bar { background: #9aa5c0; }
-
-/* Tag — silver */
-.c-moon .c-tag { color: #9aa5c0; border-color: #9aa5c0; }
-
-/* Outcome value — silver-white glow */
-.c-moon .out-val { color: #c8d0e8; }
-
-/* Hover glow — silvery moonlight */
-.c-moon:hover {
-  box-shadow: 0 12px 32px rgba(150, 160, 200, 0.14);
-  border-color: rgba(160, 170, 210, 0.35);
-  background: #09090f;
-}
-
-/* Animated moon shimmer on top */
-.c-moon::before {
+/* Subtle dark overlay per section so text is readable over the moon */
+.detail-slide::before {
   content: '';
   position: absolute;
-  top: -30px; left: -30px;
-  width: 120px; height: 120px;
+  inset: 0;
+  background: rgba(4, 6, 13, 0.75);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ensure slide content sits above the overlay */
+.detail-slide > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Slide Navigation Bar ── */
+.slide-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 40px;
+  background: rgba(4, 6, 13, 0.9);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-back, .nav-next {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--sub);
+  font-family: var(--fh);
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  padding: 9px 18px;
+  cursor: pointer;
+  transition: all 0.25s;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.nav-back:hover { border-color: var(--cyan); color: var(--cyan); }
+.nav-next:hover { border-color: var(--orange); color: var(--orange); }
+.nav-end:hover  { border-color: var(--cyan); color: var(--cyan); }
+
+.slide-nav-pills {
+  display: flex;
+  gap: 10px;
+}
+.nav-pill {
+  width: 32px; height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.68rem; letter-spacing: 1px; font-weight: 700;
+  color: var(--sub);
+  cursor: pointer;
+  transition: all 0.22s;
+  font-family: var(--fd);
+  user-select: none;
+}
+.nav-pill:hover { border-color: var(--sub); color: var(--white); }
+.nav-pill.active {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  color: var(--bg);
+}
+
+/* ── Slide Content ── */
+.slide-content {
+  width: 90%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.slide-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.slide-num {
+  font-family: var(--fd);
+  font-size: 0.78rem;
+  letter-spacing: 3px;
+  color: var(--sub);
+  font-weight: 700;
+}
+.slide-tag {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  border: 1px solid;
+  padding: 3px 9px;
+  border-radius: 2px;
+}
+.cyan-tag   { color: var(--cyan);   border-color: var(--cyan);   }
+.blue-tag   { color: #5599ff;       border-color: #5599ff;       }
+.orange-tag { color: var(--orange); border-color: var(--orange); }
+
+.slide-icon-big {
+  font-size: 2.2rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 18px rgba(0,255,213,0.25));
+}
+[data-color="blue"]   .slide-icon-big { filter: drop-shadow(0 0 18px rgba(0,102,255,0.3)); }
+[data-color="orange"] .slide-icon-big { filter: drop-shadow(0 0 18px rgba(255,85,0,0.3)); }
+
+.slide-title {
+  font-family: var(--fh);
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: 2px;
+  line-height: 1.1;
+}
+.accent-cyan   { color: var(--cyan); }
+.accent-blue   { color: #5599ff; }
+.accent-orange { color: var(--orange); }
+
+.slide-subtitle {
+  font-size: 0.9rem;
+  color: var(--sub);
+  max-width: 680px;
+  line-height: 1.6;
+}
+
+/* ── Two-column body ── */
+.slide-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin-top: 0;
+}
+.slide-col { display: flex; flex-direction: column; gap: 14px; }
+
+/* Detail text blocks */
+.detail-block { display: flex; flex-direction: column; gap: 6px; }
+.detail-label {
+  font-size: 0.62rem;
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: var(--dim);
+  text-transform: uppercase;
+  border-left: 2px solid var(--border);
+  padding-left: 10px;
+}
+.detail-block p {
+  font-size: 0.84rem;
+  color: var(--sub);
+  line-height: 1.55;
+}
+
+/* ── Metrics Grid ── */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.metric-box {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  padding: 11px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: border-color 0.25s, transform 0.25s;
+}
+.metric-box:hover { transform: translateY(-2px); }
+.metric-num {
+  font-family: var(--fd);
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  line-height: 1;
+}
+.metric-num.cyan   { color: var(--cyan); }
+.metric-num.blue   { color: #5599ff; }
+.metric-num.orange { color: var(--orange); }
+.metric-lbl {
+  font-size: 0.68rem;
+  color: var(--sub);
+  line-height: 1.3;
+}
+
+/* ── Action Steps ── */
+.action-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.action-label {
+  font-size: 0.62rem;
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: var(--dim);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.action-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--sub);
+  line-height: 1.4;
+  padding: 7px 12px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid var(--border);
+  transition: background 0.22s, border-color 0.22s;
+}
+.action-item:hover { background: rgba(255,255,255,0.05); }
+.a-dot {
+  width: 6px; height: 6px;
   border-radius: 50%;
-  background: rgba(180, 190, 230, 0.03);
-  animation: moonGlow 4s infinite ease-in-out;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+.cyan-dot   { background: var(--cyan);   box-shadow: 0 0 6px var(--cyan); }
+.blue-dot   { background: #5599ff;       box-shadow: 0 0 6px #5599ff; }
+.orange-dot { background: var(--orange); box-shadow: 0 0 6px var(--orange); }
+
+/* ── Outcome Bar ── */
+.slide-outcome-bar {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 14px 20px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+}
+.cyan-bar   { border-left: 3px solid var(--cyan);   }
+.blue-bar   { border-left: 3px solid #5599ff;       }
+.orange-bar { border-left: 3px solid var(--orange); }
+
+.out-label {
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: var(--dim);
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+.out-text {
+  font-size: 0.9rem;
+  color: var(--white);
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* ── Section dividers: subtle accent glow at top ── */
+#slide-1 { border-top-color: rgba(0, 255, 213, 0.15); }
+#slide-2 { border-top-color: rgba(0, 102, 255, 0.15); }
+#slide-3 { border-top-color: rgba(255, 85,  0,  0.15); }
+#slide-4 { border-top-color: rgba(0, 255, 213, 0.15); }
+#slide-5 { border-top-color: rgba(0, 102, 255, 0.15); }
+#slide-6 { border-top-color: rgba(255, 85,  0,  0.15); }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .cards-grid  { grid-template-columns: 1fr 1fr; }
+  .slide-body  { grid-template-columns: 1fr; }
+  .slide-nav   { padding: 12px 20px; }
+}
+@media (max-width: 600px) {
+  .cards-grid          { grid-template-columns: 1fr; }
+  .hero h1             { font-size: 1.6rem; }
+  .slide-nav-pills     { display: none; }
+  .slide-title         { font-size: 2rem; }
+  .metrics-grid        { grid-template-columns: 1fr; }
+  .footer-row          { flex-direction: column; gap: 16px; }
+}
+
+/* =============================================
+   ACHIEVER UNITED 2027
+   ============================================= */
+
+.achiever-section {
+  position: relative;
+  min-height: 100vh;
+  background: transparent;
+  border-top: 1px solid rgba(255, 213, 0, 0.12);
+  display: flex;
+  align-items: center;
+}
+
+/* Dark overlay so section is distinct */
+.achiever-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 6, 13, 0.82);
+  z-index: 0;
   pointer-events: none;
 }
-@keyframes moonGlow {
-  0%,100% { transform: scale(1);   opacity: 0.5; }
-  50%      { transform: scale(1.2); opacity: 1; }
+
+.achiever-inner {
+  position: relative;
+  z-index: 1;
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 0 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
 }
 
-/* Responsive */
+/* ── Header ── */
+.achiever-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
 
-@media (max-width:900px) { .cards-grid { grid-template-columns: 1fr 1fr; } }
-@media (max-width:600px) { .cards-grid { grid-template-columns: 1fr; } .hero h1 { font-size:1.6rem; } }
+.achiever-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.achiever-tag {
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  font-weight: 700;
+  color: #ffd700;
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  padding: 4px 12px;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+
+.achiever-title {
+  font-family: var(--fh);
+  font-size: clamp(2.4rem, 6vw, 5rem);
+  font-weight: 800;
+  letter-spacing: 8px;
+  line-height: 1;
+  color: var(--white);
+}
+.achiever-title .achiever-year {
+  color: #ffd700;
+  text-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+}
+
+.achiever-year-badge {
+  font-family: var(--fd);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 6px;
+  color: rgba(255, 215, 0, 0.55);
+  border: 1px solid rgba(255, 215, 0, 0.18);
+  padding: 4px 18px;
+  border-radius: 2px;
+  margin-top: 2px;
+}
+
+.achiever-subtitle {
+  font-size: 0.92rem;
+  color: var(--sub);
+  max-width: 560px;
+  line-height: 1.65;
+  margin-top: 4px;
+}
+
+/* ── Hover hint ── */
+.achiever-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  color: var(--dim);
+  text-transform: uppercase;
+  animation: hintPulse 2.5s infinite ease-in-out;
+}
+.hint-icon { font-size: 1rem; }
+
+/* ── Personalities Row ── */
+.personalities-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 24px;
+  width: 100%;
+}
+
+/* ── Individual Card ── */
+.personality-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  cursor: pointer;
+  width: 240px;
+  position: relative;
+  z-index: 2;
+  transform: translateY(0) scale(1);
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), z-index 0.6s;
+}
+
+.personality-card:hover {
+  transform: translateY(-16px) scale(1.08);
+  z-index: 20;
+}
+
+.center-card {
+  width: 280px;          /* center card slightly bigger */
+  margin-bottom: 0;
+  transform: translateY(-20px) scale(1); /* raised slightly by default */
+}
+
+.center-card:hover {
+  transform: translateY(-36px) scale(1.08);
+}
+
+/* Image wrapper */
+.personality-img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: visible; /* Let the image pop out of bounds by default */
+  background: radial-gradient(circle at center, rgba(255, 215, 0, 0.1) 0%, rgba(255, 255, 255, 0.03) 70%);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  transition: background 0.6s ease, border-color 0.6s ease;
+}
+
+.personality-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  position: relative;
+  z-index: 1;
+
+  /* START: black silhouette, popped out of frame by default */
+  filter: brightness(0);
+  transform: scale(1.1) translateY(-6%);
+  transform-origin: bottom center;
+  transition: filter 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Dark mask overlay (adds depth to the silhouette) */
+.personality-mask {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 6, 13, 0.05);
+  z-index: 2;
+  transition: opacity 0.6s ease;
+}
+
+/* Glow behind on hover */
+.personality-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at bottom, rgba(255,215,0,0.2) 0%, transparent 70%);
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+/* ── HOVER: reveal full color & zoom slightly more ── */
+.personality-card:hover .personality-img {
+  filter: brightness(1) saturate(1.15) contrast(1.05);
+  transform: scale(1.15) translateY(-8%);
+  z-index: 5;
+}
+.personality-card:hover .personality-img-wrap {
+  background: radial-gradient(circle at center, rgba(255, 215, 0, 0.25) 0%, rgba(255, 215, 0, 0.06) 80%);
+  border-color: rgba(255, 215, 0, 0.35);
+}
+.personality-card:hover .personality-mask {
+  opacity: 0;
+}
+.personality-card:hover .personality-glow {
+  opacity: 1;
+}
+
+/* Name info below image */
+.personality-info {
+  width: 100%;
+  background: rgba(8, 13, 24, 0.95);
+  border: 1px solid var(--border);
+  border-top: none;
+  padding: 14px 16px;
+  text-align: center;
+  position: relative;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.6s ease;
+}
+.personality-card:hover .personality-info {
+  border-color: rgba(255, 215, 0, 0.35);
+}
+
+/* Question mark (shown by default) */
+.personality-question {
+  font-family: var(--fd);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--dim);
+  transition: opacity 0.35s ease;
+  position: absolute;
+}
+.personality-card:hover .personality-question {
+  opacity: 0;
+}
+
+/* Name + role (hidden by default, visible on hover) */
+.personality-reveal {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.4s ease 0.15s, transform 0.4s ease 0.15s;
+}
+.personality-card:hover .personality-reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.personality-name {
+  font-family: var(--fh);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  color: #ffd700;
+}
+.personality-role {
+  font-size: 0.68rem;
+  color: var(--sub);
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+/* Gold top accent bar on image */
+.personality-img-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: #ffd700;
+  z-index: 3;
+  transform: scaleX(0);
+  transition: transform 0.5s ease;
+  transform-origin: left;
+}
+.personality-card:hover .personality-img-wrap::after {
+  transform: scaleX(1);
+}
+
+/* ── Footer ── */
+.achiever-footer {
+  margin-top: 8px;
+}
+.achiever-footer-line {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  color: var(--sub);
+}
+.footer-tag {
+  background: rgba(255, 215, 0, 0.08);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  color: #ffd700;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  padding: 3px 10px;
+  border-radius: 2px;
+}
+.footer-dots {
+  display: flex;
+  gap: 6px;
+}
+.footer-dots span {
+  width: 4px; height: 4px;
+  background: var(--dim);
+  border-radius: 50%;
+  animation: dotBlink 1.4s infinite ease-in-out;
+}
+.footer-dots span:nth-child(2) { animation-delay: 0.2s; }
+.footer-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotBlink {
+  0%,100% { opacity: 0.2; }
+  50%      { opacity: 1; }
+}
+.footer-text { color: var(--sub); }
+
+@media (max-width: 768px) {
+  .personalities-row { flex-direction: column; align-items: center; }
+  .center-card { transform: none; width: 240px; }
+  .personality-card { width: 240px; }
+}
+

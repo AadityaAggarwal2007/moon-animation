@@ -11,219 +11,668 @@
 </head>
 <body>
 
+  <!-- ===== SPACE BACKGROUND — fixed to viewport, always behind everything ===== -->
+  <div id="spaceBg" class="space-bg hidden">
+    <div class="moon-bg">
+      <div class="moon-crater mc1"></div>
+      <div class="moon-crater mc2"></div>
+      <div class="moon-crater mc3"></div>
+      <div class="moon-crater mc4"></div>
+      <div class="moon-crater mc5"></div>
+    </div>
+    <div class="star s1"></div><div class="star s2"></div><div class="star s3"></div>
+    <div class="star s4"></div><div class="star s5"></div><div class="star s6"></div>
+    <div class="star s7"></div><div class="star s8"></div><div class="star s9"></div>
+    <div class="star s10"></div><div class="star s11"></div><div class="star s12"></div>
+    <div class="star s13"></div><div class="star s14"></div><div class="star s15"></div>
+    <div class="star s16"></div><div class="star s17"></div><div class="star s18"></div>
+    <div class="star s19"></div><div class="star s20"></div><div class="star s21"></div>
+    <div class="star s22"></div><div class="star s23"></div><div class="star s24"></div>
+    <div class="star s25"></div><div class="star s26"></div><div class="star s27"></div>
+    <div class="star s28"></div><div class="star s29"></div><div class="star s30"></div>
+    <div class="star s31"></div><div class="star s32"></div><div class="star s33"></div>
+    <div class="star s34"></div><div class="star s35"></div><div class="star s36"></div>
+    <div class="star s37"></div><div class="star s38"></div><div class="star s39"></div>
+    <div class="star s40"></div><div class="star s41"></div><div class="star s42"></div>
+    <div class="star s43"></div><div class="star s44"></div><div class="star s45"></div>
+    <div class="star s46"></div><div class="star s47"></div><div class="star s48"></div>
+    <div class="star s49"></div><div class="star s50"></div>
+  </div>
+
   <!-- ===== PHASE 1: LAUNCH SCREEN ===== -->
   <div id="launchScreen" class="launch-screen">
     <div class="bg-grid"></div>
     <div class="lines-layer" id="linesLayer"></div>
 
-    <!-- Status -->
     <div class="status-text" id="statusText">SYSTEM INITIALIZING...</div>
 
-    <!-- Rocket wrapper — JS drives bottom + width -->
     <div class="rocket-wrap" id="rocketWrap">
-
-      <!-- Glow halo behind rocket -->
       <div class="rocket-halo"></div>
-
-      <svg class="rocket-svg" id="rocketSvg"
-           viewBox="0 0 100 260"
-           xmlns="http://www.w3.org/2000/svg"
-           preserveAspectRatio="xMidYMid meet">
-
-        <!-- ── EXHAUST FLAMES (drawn first, behind body) ── -->
-        <!-- Outer wide flame -->
-        <path class="flame flame-outer"
-              d="M32 222 Q20 270 50 290 Q80 270 68 222 Z"/>
-        <!-- Mid flame -->
-        <path class="flame flame-mid"
-              d="M36 222 Q28 258 50 272 Q72 258 64 222 Z"/>
-        <!-- Core flame -->
-        <path class="flame flame-core"
-              d="M40 222 Q36 248 50 256 Q64 248 60 222 Z"/>
-        <!-- Hot core -->
+      <svg class="rocket-svg" id="rocketSvg" viewBox="0 0 100 260"
+           xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <path class="flame flame-outer" d="M32 222 Q20 270 50 290 Q80 270 68 222 Z"/>
+        <path class="flame flame-mid"   d="M36 222 Q28 258 50 272 Q72 258 64 222 Z"/>
+        <path class="flame flame-core"  d="M40 222 Q36 248 50 256 Q64 248 60 222 Z"/>
         <ellipse class="flame-hot" cx="50" cy="226" rx="7" ry="5"/>
-
-        <!-- ── ENGINE BELL / NOZZLE ── -->
-        <path class="nozzle"
-              d="M34 210 L28 224 L72 224 L66 210 Z"/>
-
-        <!-- ── MAIN ROCKET BODY ── -->
+        <path class="nozzle" d="M34 210 L28 224 L72 224 L66 210 Z"/>
         <rect class="body" x="30" y="72" width="40" height="140" rx="6"/>
-
-        <!-- Body detail stripe top -->
         <rect class="body-stripe" x="30" y="85" width="40" height="5" rx="2"/>
-        <!-- Body detail stripe bottom -->
         <rect class="body-stripe" x="30" y="195" width="40" height="5" rx="2"/>
-
-        <!-- ── NOSE CONE ── -->
-        <path class="nose-cone"
-              d="M50 8 Q68 38 70 72 L30 72 Q32 38 50 8 Z"/>
-
-        <!-- Nose tip highlight -->
+        <path class="nose-cone" d="M50 8 Q68 38 70 72 L30 72 Q32 38 50 8 Z"/>
         <ellipse class="nose-tip" cx="50" cy="18" rx="4" ry="8"/>
-
-        <!-- ── COCKPIT WINDOW ── -->
         <ellipse class="window-outer" cx="50" cy="120" rx="13" ry="15"/>
         <ellipse class="window-inner" cx="50" cy="120" rx="9"  ry="11"/>
         <ellipse class="window-shine" cx="46" cy="115" rx="3"  ry="4"/>
-
-        <!-- ── SWEPT FINS ── -->
-        <path class="fin fin-l"
-              d="M30 185 L6 235 Q14 232 30 218 Z"/>
-        <path class="fin fin-r"
-              d="M70 185 L94 235 Q86 232 70 218 Z"/>
-
-        <!-- Fin detail lines -->
+        <path class="fin fin-l" d="M30 185 L6 235 Q14 232 30 218 Z"/>
+        <path class="fin fin-r" d="M70 185 L94 235 Q86 232 70 218 Z"/>
         <line class="fin-line" x1="30" y1="185" x2="10" y2="230"/>
         <line class="fin-line" x1="70" y1="185" x2="90" y2="230"/>
-
-        <!-- ── SIDE THRUSTERS (small detail) ── -->
         <rect class="thruster thr-l" x="17" y="205" width="13" height="8" rx="3"/>
         <rect class="thruster thr-r" x="70" y="205" width="13" height="8" rx="3"/>
-
-        <!-- ── BODY PANEL LINES ── -->
         <line class="panel-line" x1="50" y1="77" x2="50" y2="205"/>
         <line class="panel-line" x1="38" y1="100" x2="38" y2="200"/>
         <line class="panel-line" x1="62" y1="100" x2="62" y2="200"/>
-
       </svg>
-
-      <!-- JS-generated exhaust particles container -->
       <div class="exhaust-particles" id="exhaustParticles"></div>
-
     </div>
 
-    <!-- Progress bar bottom -->
     <div class="prog-track">
       <div class="prog-fill" id="progFill"></div>
     </div>
-
-    <!-- Watermark number -->
     <div class="watermark" id="watermark">00</div>
-
   </div>
 
-  <!-- ===== PHASE 2: INITIATIVES ===== -->
-  <div id="initiativesScreen" class="initiatives-screen hidden">
+  <!-- ===== MAIN CONTENT — scrolls after animation ===== -->
+  <div id="mainContent" class="main-content hidden">
 
-    <!-- Moon + Stars — behind everything, gives "arrived at moon" feel -->
-    <div class="space-bg">
-      <div class="moon-bg">
-        <div class="moon-crater mc1"></div>
-        <div class="moon-crater mc2"></div>
-        <div class="moon-crater mc3"></div>
-        <div class="moon-crater mc4"></div>
-        <div class="moon-crater mc5"></div>
-      </div>
-      <div class="star s1"></div><div class="star s2"></div><div class="star s3"></div>
-      <div class="star s4"></div><div class="star s5"></div><div class="star s6"></div>
-      <div class="star s7"></div><div class="star s8"></div><div class="star s9"></div>
-      <div class="star s10"></div><div class="star s11"></div><div class="star s12"></div>
-      <div class="star s13"></div><div class="star s14"></div><div class="star s15"></div>
-      <div class="star s16"></div><div class="star s17"></div><div class="star s18"></div>
-      <div class="star s19"></div><div class="star s20"></div><div class="star s21"></div>
-      <div class="star s22"></div><div class="star s23"></div><div class="star s24"></div>
-      <div class="star s25"></div><div class="star s26"></div><div class="star s27"></div>
-      <div class="star s28"></div><div class="star s29"></div><div class="star s30"></div>
-      <div class="star s31"></div><div class="star s32"></div><div class="star s33"></div>
-      <div class="star s34"></div><div class="star s35"></div><div class="star s36"></div>
-      <div class="star s37"></div><div class="star s38"></div><div class="star s39"></div>
-      <div class="star s40"></div><div class="star s41"></div><div class="star s42"></div>
-      <div class="star s43"></div><div class="star s44"></div><div class="star s45"></div>
-      <div class="star s46"></div><div class="star s47"></div><div class="star s48"></div>
-      <div class="star s49"></div><div class="star s50"></div>
-    </div>
-    <div class="init-inner">
+    <!-- ── SECTION 0: OVERVIEW ── -->
+    <section id="overviewSection" class="overview-section">
+      <div class="init-inner">
 
-      <header class="init-header">
-        <div class="header-left">
-          <span class="dot-pulse"></span>
-          <span>URJA SYSTEM — OPTIMIZED</span>
-        </div>
-        <span class="header-right">INITIATIVE GATEWAY // OPERATIONAL</span>
-      </header>
+        <header class="init-header">
+          <div class="header-left">
+            <span class="dot-pulse"></span>
+            <span>URJA SYSTEM — OPTIMIZED</span>
+          </div>
+          <span class="header-right">INITIATIVE GATEWAY // OPERATIONAL</span>
+        </header>
 
-      <div class="hero">
-        <div class="check-ring">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-        </div>
-        <h1>NEW INITIATIVES</h1>
-        <p>Building stronger systems, stronger value, and stronger opportunities for URJA</p>
-      </div>
-
-      <div class="cards-grid">
-
-        <div class="card c-cyan">
-          <div class="c-top-bar"></div>
-          <div class="c-row"><span class="c-icon">🏈</span><span class="c-tag">ACTIVE</span></div>
-          <h2>Brand Partnership Network</h2>
-          <p>Establish a dedicated brand liaison ecosystem and intermediary channel to secure better sponsorship opportunities and long-term partnerships.</p>
-          <div class="c-outcome"><span class="out-lbl">OUTCOME</span><span class="out-val">Better deals & sponsor retention.</span></div>
-          <div class="c-bot-bar"></div>
+        <div class="hero">
+          <div class="check-ring">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <h1>NEW INITIATIVES</h1>
+          <p>Building stronger systems, stronger value, and stronger opportunities for URJA</p>
         </div>
 
-        <div class="card c-blue">
-          <div class="c-top-bar"></div>
-          <div class="c-row"><span class="c-icon">💻</span><span class="c-tag">ACTIVE</span></div>
-          <h2>URJA Tech Studio</h2>
-          <p>Create a tech wing that takes up selective freelance projects, strengthens manpower, and provides real-world exposure to members.</p>
-          <div class="c-outcome"><span class="out-lbl">OUTCOME</span><span class="out-val">Stronger tech team & additional revenue.</span></div>
-          <div class="c-bot-bar"></div>
+        <div class="cards-grid">
+
+          <div class="card c-cyan" data-slide="1">
+            <div class="c-top-bar"></div>
+            <div class="c-row"><span class="c-icon">🏈</span><span class="c-tag">ACTIVE</span></div>
+            <h2>Brand Partnership Network</h2>
+            <p>Establish a dedicated brand liaison ecosystem and intermediary channel to secure better sponsorship opportunities and long-term partnerships.</p>
+            <div class="c-outcome"><span class="out-lbl">OUTCOME</span><span class="out-val">Better deals & sponsor retention.</span></div>
+            <div class="c-bot-bar"></div>
+            <div class="slide-cta">SCROLL TO EXPLORE ↓</div>
+          </div>
+
+          <div class="card c-blue" data-slide="2">
+            <div class="c-top-bar"></div>
+            <div class="c-row"><span class="c-icon">💻</span><span class="c-tag">ACTIVE</span></div>
+            <h2>URJA Tech Studio</h2>
+            <p>Create a tech wing that takes up selective freelance projects, strengthens manpower, and provides real-world exposure to members.</p>
+            <div class="c-outcome"><span class="out-lbl">OUTCOME</span><span class="out-val">Stronger tech team & additional revenue.</span></div>
+            <div class="c-bot-bar"></div>
+            <div class="slide-cta">SCROLL TO EXPLORE ↓</div>
+          </div>
+
+          <div class="card c-orange" data-slide="3">
+            <div class="c-top-bar"></div>
+            <div class="c-row"><span class="c-icon">🌐</span><span class="c-tag">ACTIVE</span></div>
+            <h2>Digital Identity Upgrade</h2>
+            <p>Revamp the website into an immersive one-stop platform for members, brands, and collaborators.</p>
+            <div class="c-outcome"><span class="out-lbl">OUTCOME</span><span class="out-val">Stronger brand image & credibility.</span></div>
+            <div class="c-bot-bar"></div>
+            <div class="slide-cta">SCROLL TO EXPLORE ↓</div>
+          </div>
+
+          <div class="card c-cyan" data-slide="4">
+            <div class="c-top-bar"></div>
+            <div class="c-row"><span class="c-icon">📚</span><span class="c-tag">ACTIVE</span></div>
+            <h2>URJA Learning Cohort</h2>
+            <p>Launch mentorship cohorts and olympiads with nominal fees, live sessions, and certification.</p>
+            <div class="c-outcome"><span class="out-lbl">OUTCOME</span><span class="out-val">Sustainable inflow &amp; educational impact.</span></div>
+            <div class="c-bot-bar"></div>
+            <div class="slide-cta">SCROLL TO EXPLORE ↓</div>
+          </div>
+
+          <div class="card c-blue" data-slide="5">
+            <div class="c-top-bar"></div>
+            <div class="c-row"><span class="c-icon">📈</span><span class="c-tag">ACTIVE</span></div>
+            <h2>Member Growth Program</h2>
+            <p>Conduct webinars, info sessions, and skill-building initiatives for members.</p>
+            <div class="c-outcome"><span class="out-lbl">OUTCOME</span><span class="out-val">Better CVs & stronger member development.</span></div>
+            <div class="c-bot-bar"></div>
+            <div class="slide-cta">SCROLL TO EXPLORE ↓</div>
+          </div>
+
+          <div class="card c-orange" data-slide="6">
+            <div class="c-top-bar"></div>
+            <div class="c-row"><span class="c-icon">🤝</span><span class="c-tag">ACTIVE</span></div>
+            <h2>Industry &amp; NGO Exposure</h2>
+            <p>Facilitate internships, live projects, NGO collaborations, and practical opportunities.</p>
+            <div class="c-outcome"><span class="out-lbl">OUTCOME</span><span class="out-val">Real-world experience beyond society work.</span></div>
+            <div class="c-bot-bar"></div>
+            <div class="slide-cta">SCROLL TO EXPLORE ↓</div>
+          </div>
+
         </div>
 
-        <div class="card c-orange">
-          <div class="c-top-bar"></div>
-          <div class="c-row"><span class="c-icon">🌐</span><span class="c-tag">ACTIVE</span></div>
-          <h2>Digital Identity Upgrade</h2>
-          <p>Revamp the website into an immersive one-stop platform for members, brands, and collaborators.</p>
-          <div class="c-outcome"><span class="out-lbl">OUTCOME</span><span class="out-val">Stronger brand image & credibility.</span></div>
-          <div class="c-bot-bar"></div>
+        <div class="banner">
+          <div class="banner-inner">
+            <span class="banner-pill">MISSION</span>
+            <p>The goal is simple — to make URJA not just event-driven, but <strong>opportunity-driven.</strong></p>
+          </div>
         </div>
 
-        <div class="card c-cyan">
-          <div class="c-top-bar"></div>
-          <div class="c-row"><span class="c-icon">📚</span><span class="c-tag">ACTIVE</span></div>
-          <h2>URJA Learning Cohort</h2>
-          <p>Launch mentorship cohorts and olympiads with nominal fees, live sessions, and certification.</p>
-          <div class="c-outcome"><span class="out-lbl">OUTCOME</span><span class="out-val">Sustainable inflow &amp; educational impact.</span></div>
-          <div class="c-bot-bar"></div>
-        </div>
-
-        <div class="card c-blue">
-          <div class="c-top-bar"></div>
-          <div class="c-row"><span class="c-icon">📈</span><span class="c-tag">ACTIVE</span></div>
-          <h2>Member Growth Program</h2>
-          <p>Conduct webinars, info sessions, and skill-building initiatives for members.</p>
-          <div class="c-outcome"><span class="out-lbl">OUTCOME</span><span class="out-val">Better CVs & stronger member development.</span></div>
-          <div class="c-bot-bar"></div>
-        </div>
-
-        <div class="card c-orange">
-          <div class="c-top-bar"></div>
-          <div class="c-row"><span class="c-icon">🤝</span><span class="c-tag">ACTIVE</span></div>
-          <h2>Industry & NGO Exposure</h2>
-          <p>Facilitate internships, live projects, NGO collaborations, and practical opportunities.</p>
-          <div class="c-outcome"><span class="out-lbl">OUTCOME</span><span class="out-val">Real-world experience beyond society work.</span></div>
-          <div class="c-bot-bar"></div>
+        <div class="footer-row">
+          <button id="replayBtn" class="replay-btn">↺ REPLAY</button>
+          <span class="scroll-hint">↓ Scroll to explore each initiative</span>
         </div>
 
       </div>
+    </section>
 
-      <div class="banner">
-        <div class="banner-inner">
-          <span class="banner-pill">MISSION</span>
-          <p>The goal is simple — to make URJA not just event-driven, but <strong>opportunity-driven.</strong></p>
+    <!-- ── SECTION 1: Brand Partnership Network ── -->
+    <section id="slide-1" class="detail-slide" data-color="cyan">
+      <div class="slide-nav">
+        <button class="nav-back" onclick="scrollToOverview()">↑ OVERVIEW</button>
+        <div class="slide-nav-pills">
+          <span class="nav-pill active" onclick="goToSlide(1)">01</span>
+          <span class="nav-pill" onclick="goToSlide(2)">02</span>
+          <span class="nav-pill" onclick="goToSlide(3)">03</span>
+          <span class="nav-pill" onclick="goToSlide(4)">04</span>
+          <span class="nav-pill" onclick="goToSlide(5)">05</span>
+          <span class="nav-pill" onclick="goToSlide(6)">06</span>
+        </div>
+        <button class="nav-next" onclick="goToSlide(2)">NEXT ↓</button>
+      </div>
+      <div class="slide-content">
+        <div class="slide-eyebrow">
+          <span class="slide-num">01 / 06</span>
+          <span class="slide-tag cyan-tag">INITIATIVE — ACTIVE</span>
+        </div>
+        <div class="slide-icon-big">🏈</div>
+        <h1 class="slide-title">Brand Partnership<br><span class="accent-cyan">Network</span></h1>
+        <p class="slide-subtitle">Building a dedicated sponsorship ecosystem to elevate URJA's market presence and unlock long-term brand alliances.</p>
+        <div class="slide-body">
+          <div class="slide-col">
+            <div class="detail-block">
+              <div class="detail-label">THE PROBLEM</div>
+              <p>URJA currently lacks a structured channel for brand communication. Sponsorship is reactive — reached out to only when events arise — leading to weaker deals and minimal retention.</p>
+            </div>
+            <div class="detail-block">
+              <div class="detail-label">THE APPROACH</div>
+              <p>Create a dedicated Brand Liaison team that maintains year-round relationships with brands, builds a sponsor pitch deck, and develops tiered sponsorship packages.</p>
+            </div>
+          </div>
+          <div class="slide-col">
+            <div class="metrics-grid">
+              <div class="metric-box">
+                <div class="metric-num cyan">3x</div>
+                <div class="metric-lbl">More sponsor touchpoints per quarter</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-num cyan">₹2L+</div>
+                <div class="metric-lbl">Projected additional sponsorship per event</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-num cyan">Long-term</div>
+                <div class="metric-lbl">Retainer-style brand partnerships</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-num cyan">Tiered</div>
+                <div class="metric-lbl">Gold / Silver / Bronze sponsor packages</div>
+              </div>
+            </div>
+            <div class="action-steps">
+              <div class="action-label">KEY ACTION STEPS</div>
+              <div class="action-item"><span class="a-dot cyan-dot"></span>Form a 3-person Brand Liaison sub-team</div>
+              <div class="action-item"><span class="a-dot cyan-dot"></span>Build a professional sponsorship deck</div>
+              <div class="action-item"><span class="a-dot cyan-dot"></span>Maintain a brand CRM / contact tracker</div>
+              <div class="action-item"><span class="a-dot cyan-dot"></span>Set quarterly outreach targets per liaison</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-outcome-bar cyan-bar">
+          <span class="out-label">EXPECTED OUTCOME</span>
+          <span class="out-text">Better deals, higher retention, and a professional brand image that attracts top-tier sponsors year-round.</span>
         </div>
       </div>
+    </section>
 
-      <div class="footer-row">
-        <button id="replayBtn" class="replay-btn">↺ REPLAY</button>
+    <!-- ── SECTION 2: URJA Tech Studio ── -->
+    <section id="slide-2" class="detail-slide" data-color="blue">
+      <div class="slide-nav">
+        <button class="nav-back" onclick="scrollToOverview()">↑ OVERVIEW</button>
+        <div class="slide-nav-pills">
+          <span class="nav-pill" onclick="goToSlide(1)">01</span>
+          <span class="nav-pill active" onclick="goToSlide(2)">02</span>
+          <span class="nav-pill" onclick="goToSlide(3)">03</span>
+          <span class="nav-pill" onclick="goToSlide(4)">04</span>
+          <span class="nav-pill" onclick="goToSlide(5)">05</span>
+          <span class="nav-pill" onclick="goToSlide(6)">06</span>
+        </div>
+        <button class="nav-next" onclick="goToSlide(3)">NEXT ↓</button>
       </div>
+      <div class="slide-content">
+        <div class="slide-eyebrow">
+          <span class="slide-num">02 / 06</span>
+          <span class="slide-tag blue-tag">INITIATIVE — ACTIVE</span>
+        </div>
+        <div class="slide-icon-big">💻</div>
+        <h1 class="slide-title">URJA Tech<br><span class="accent-blue">Studio</span></h1>
+        <p class="slide-subtitle">A dedicated tech wing that takes on real-world freelance projects to strengthen URJA's technical manpower and generate additional revenue.</p>
+        <div class="slide-body">
+          <div class="slide-col">
+            <div class="detail-block">
+              <div class="detail-label">THE PROBLEM</div>
+              <p>Tech talent within URJA is underutilized outside of event cycles. Members gain no real-world experience, and the society misses a revenue-generating opportunity sitting idle.</p>
+            </div>
+            <div class="detail-block">
+              <div class="detail-label">THE APPROACH</div>
+              <p>Launch URJA Tech Studio as an internal "agency" that selectively takes on web, design, and software projects from external clients under proper project management.</p>
+            </div>
+          </div>
+          <div class="slide-col">
+            <div class="metrics-grid">
+              <div class="metric-box">
+                <div class="metric-num blue">₹50K+</div>
+                <div class="metric-lbl">Target revenue per project cycle</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-num blue">8–12</div>
+                <div class="metric-lbl">Active tech members per cohort</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-num blue">Portfolio</div>
+                <div class="metric-lbl">Real client work for member CVs</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-num blue">Selective</div>
+                <div class="metric-lbl">Only quality projects accepted</div>
+              </div>
+            </div>
+            <div class="action-steps">
+              <div class="action-label">KEY ACTION STEPS</div>
+              <div class="action-item"><span class="a-dot blue-dot"></span>Form a core tech team with defined roles</div>
+              <div class="action-item"><span class="a-dot blue-dot"></span>Set up internal project management workflows</div>
+              <div class="action-item"><span class="a-dot blue-dot"></span>Onboard first 2–3 pilot client projects</div>
+              <div class="action-item"><span class="a-dot blue-dot"></span>Establish a revenue-sharing model with contributors</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-outcome-bar blue-bar">
+          <span class="out-label">EXPECTED OUTCOME</span>
+          <span class="out-text">Stronger technical team, real-world portfolios for members, and a sustainable new revenue stream for URJA.</span>
+        </div>
+      </div>
+    </section>
 
-    </div>
-  </div>
+    <!-- ── SECTION 3: Digital Identity Upgrade ── -->
+    <section id="slide-3" class="detail-slide" data-color="orange">
+      <div class="slide-nav">
+        <button class="nav-back" onclick="scrollToOverview()">↑ OVERVIEW</button>
+        <div class="slide-nav-pills">
+          <span class="nav-pill" onclick="goToSlide(1)">01</span>
+          <span class="nav-pill" onclick="goToSlide(2)">02</span>
+          <span class="nav-pill active" onclick="goToSlide(3)">03</span>
+          <span class="nav-pill" onclick="goToSlide(4)">04</span>
+          <span class="nav-pill" onclick="goToSlide(5)">05</span>
+          <span class="nav-pill" onclick="goToSlide(6)">06</span>
+        </div>
+        <button class="nav-next" onclick="goToSlide(4)">NEXT ↓</button>
+      </div>
+      <div class="slide-content">
+        <div class="slide-eyebrow">
+          <span class="slide-num">03 / 06</span>
+          <span class="slide-tag orange-tag">INITIATIVE — ACTIVE</span>
+        </div>
+        <div class="slide-icon-big">🌐</div>
+        <h1 class="slide-title">Digital Identity<br><span class="accent-orange">Upgrade</span></h1>
+        <p class="slide-subtitle">Transforming URJA's digital presence into a modern, immersive platform that impresses members, brands, and collaborators alike.</p>
+        <div class="slide-body">
+          <div class="slide-col">
+            <div class="detail-block">
+              <div class="detail-label">THE PROBLEM</div>
+              <p>URJA's existing digital footprint is outdated and fragmented. Brands can't find what they need, members aren't proud to share it, and the identity doesn't reflect the society's ambition.</p>
+            </div>
+            <div class="detail-block">
+              <div class="detail-label">THE APPROACH</div>
+              <p>Build a world-class website — a one-stop destination with event archives, member profiles, sponsor info, achievements, and live initiative tracking. Pair with a strong social identity refresh.</p>
+            </div>
+          </div>
+          <div class="slide-col">
+            <div class="metrics-grid">
+              <div class="metric-box">
+                <div class="metric-num orange">1-Stop</div>
+                <div class="metric-lbl">Platform for all stakeholders</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-num orange">Modern</div>
+                <div class="metric-lbl">Immersive design like top-tier societies</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-num orange">SEO</div>
+                <div class="metric-lbl">Discoverable by brands & colleges</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-num orange">Brand Kit</div>
+                <div class="metric-lbl">Unified visual identity across all channels</div>
+              </div>
+            </div>
+            <div class="action-steps">
+              <div class="action-label">KEY ACTION STEPS</div>
+              <div class="action-item"><span class="a-dot orange-dot"></span>Design and launch new URJA website</div>
+              <div class="action-item"><span class="a-dot orange-dot"></span>Create unified brand kit (logo, fonts, colors)</div>
+              <div class="action-item"><span class="a-dot orange-dot"></span>Set up structured social media calendar</div>
+              <div class="action-item"><span class="a-dot orange-dot"></span>Add live initiative + event tracking pages</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-outcome-bar orange-bar">
+          <span class="out-label">EXPECTED OUTCOME</span>
+          <span class="out-text">A digital presence that commands respect, builds credibility with brands, and makes URJA's story impossible to ignore.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 4: URJA Learning Cohort ── -->
+    <section id="slide-4" class="detail-slide" data-color="cyan">
+      <div class="slide-nav">
+        <button class="nav-back" onclick="scrollToOverview()">↑ OVERVIEW</button>
+        <div class="slide-nav-pills">
+          <span class="nav-pill" onclick="goToSlide(1)">01</span>
+          <span class="nav-pill" onclick="goToSlide(2)">02</span>
+          <span class="nav-pill" onclick="goToSlide(3)">03</span>
+          <span class="nav-pill active" onclick="goToSlide(4)">04</span>
+          <span class="nav-pill" onclick="goToSlide(5)">05</span>
+          <span class="nav-pill" onclick="goToSlide(6)">06</span>
+        </div>
+        <button class="nav-next" onclick="goToSlide(5)">NEXT ↓</button>
+      </div>
+      <div class="slide-content">
+        <div class="slide-eyebrow">
+          <span class="slide-num">04 / 06</span>
+          <span class="slide-tag cyan-tag">INITIATIVE — ACTIVE</span>
+        </div>
+        <div class="slide-icon-big">📚</div>
+        <h1 class="slide-title">URJA Learning<br><span class="accent-cyan">Cohort</span></h1>
+        <p class="slide-subtitle">Structured mentorship cohorts and olympiads that create a sustainable educational revenue stream and deliver real value to participants.</p>
+        <div class="slide-body">
+          <div class="slide-col">
+            <div class="detail-block">
+              <div class="detail-label">THE PROBLEM</div>
+              <p>URJA has incredible intellectual firepower that goes untapped between events. There's a clear gap for structured learning that students are willing to pay for — and URJA can fill it.</p>
+            </div>
+            <div class="detail-block">
+              <div class="detail-label">THE APPROACH</div>
+              <p>Launch paid cohort programs (nominal fee: ₹200–500) covering finance, tech, and management. Include live sessions, industry mentors, quizzes, and certification on completion.</p>
+            </div>
+          </div>
+          <div class="slide-col">
+            <div class="metrics-grid">
+              <div class="metric-box">
+                <div class="metric-num cyan">₹200–500</div>
+                <div class="metric-lbl">Nominal participation fee per cohort</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-num cyan">50+</div>
+                <div class="metric-lbl">Target learners in first cohort</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-num cyan">Certified</div>
+                <div class="metric-lbl">Digital certificate on completion</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-num cyan">Recurring</div>
+                <div class="metric-lbl">Quarterly cohort model</div>
+              </div>
+            </div>
+            <div class="action-steps">
+              <div class="action-label">KEY ACTION STEPS</div>
+              <div class="action-item"><span class="a-dot cyan-dot"></span>Define 2–3 cohort tracks (Finance / Tech / Mgmt)</div>
+              <div class="action-item"><span class="a-dot cyan-dot"></span>Partner with faculty / alumni mentors</div>
+              <div class="action-item"><span class="a-dot cyan-dot"></span>Set up registration + payment flow</div>
+              <div class="action-item"><span class="a-dot cyan-dot"></span>Launch pilot olympiad for visibility</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-outcome-bar cyan-bar">
+          <span class="out-label">EXPECTED OUTCOME</span>
+          <span class="out-text">A recurring revenue stream, meaningful educational impact, and a strong reason for non-URJA students to engage with the society.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 5: Member Growth Program ── -->
+    <section id="slide-5" class="detail-slide" data-color="blue">
+      <div class="slide-nav">
+        <button class="nav-back" onclick="scrollToOverview()">↑ OVERVIEW</button>
+        <div class="slide-nav-pills">
+          <span class="nav-pill" onclick="goToSlide(1)">01</span>
+          <span class="nav-pill" onclick="goToSlide(2)">02</span>
+          <span class="nav-pill" onclick="goToSlide(3)">03</span>
+          <span class="nav-pill" onclick="goToSlide(4)">04</span>
+          <span class="nav-pill active" onclick="goToSlide(5)">05</span>
+          <span class="nav-pill" onclick="goToSlide(6)">06</span>
+        </div>
+        <button class="nav-next" onclick="goToSlide(6)">NEXT ↓</button>
+      </div>
+      <div class="slide-content">
+        <div class="slide-eyebrow">
+          <span class="slide-num">05 / 06</span>
+          <span class="slide-tag blue-tag">INITIATIVE — ACTIVE</span>
+        </div>
+        <div class="slide-icon-big">📈</div>
+        <h1 class="slide-title">Member Growth<br><span class="accent-blue">Program</span></h1>
+        <p class="slide-subtitle">A structured internal development engine — webinars, skill-building, and mentoring to make every URJA member genuinely more valuable.</p>
+        <div class="slide-body">
+          <div class="slide-col">
+            <div class="detail-block">
+              <div class="detail-label">THE PROBLEM</div>
+              <p>Members join URJA excited, but often leave without tangible skills to show for it. Society membership should feel like a launchpad — not just an extra-curricular checkbox.</p>
+            </div>
+            <div class="detail-block">
+              <div class="detail-label">THE APPROACH</div>
+              <p>Run bi-monthly internal webinars, guest speaker sessions, and CV clinics. Create a structured learning path for each domain (tech, design, finance, marketing) within URJA.</p>
+            </div>
+          </div>
+          <div class="slide-col">
+            <div class="metrics-grid">
+              <div class="metric-box">
+                <div class="metric-num blue">Bi-monthly</div>
+                <div class="metric-lbl">Internal webinars / skill sessions</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-num blue">CV Clinics</div>
+                <div class="metric-lbl">Resume reviews by alumni / seniors</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-num blue">Domain Tracks</div>
+                <div class="metric-lbl">Structured paths per team</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-num blue">Guest Talks</div>
+                <div class="metric-lbl">Industry speakers for real perspective</div>
+              </div>
+            </div>
+            <div class="action-steps">
+              <div class="action-label">KEY ACTION STEPS</div>
+              <div class="action-item"><span class="a-dot blue-dot"></span>Create a Member Growth calendar (6 months)</div>
+              <div class="action-item"><span class="a-dot blue-dot"></span>Assign domain leads to curate content</div>
+              <div class="action-item"><span class="a-dot blue-dot"></span>Onboard 2 alumni mentors per domain</div>
+              <div class="action-item"><span class="a-dot blue-dot"></span>Track member skill growth through surveys</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-outcome-bar blue-bar">
+          <span class="out-label">EXPECTED OUTCOME</span>
+          <span class="out-text">Members leave URJA with stronger CVs, real skills, and a network that multiplies their professional opportunities.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 6: Industry & NGO Exposure ── -->
+    <section id="slide-6" class="detail-slide" data-color="orange">
+      <div class="slide-nav">
+        <button class="nav-back" onclick="scrollToOverview()">↑ OVERVIEW</button>
+        <div class="slide-nav-pills">
+          <span class="nav-pill" onclick="goToSlide(1)">01</span>
+          <span class="nav-pill" onclick="goToSlide(2)">02</span>
+          <span class="nav-pill" onclick="goToSlide(3)">03</span>
+          <span class="nav-pill" onclick="goToSlide(4)">04</span>
+          <span class="nav-pill" onclick="goToSlide(5)">05</span>
+          <span class="nav-pill active" onclick="goToSlide(6)">06</span>
+        </div>
+        <button class="nav-next nav-end" onclick="scrollToOverview()">↑ TOP</button>
+      </div>
+      <div class="slide-content">
+        <div class="slide-eyebrow">
+          <span class="slide-num">06 / 06</span>
+          <span class="slide-tag orange-tag">INITIATIVE — ACTIVE</span>
+        </div>
+        <div class="slide-icon-big">🤝</div>
+        <h1 class="slide-title">Industry &amp; NGO<br><span class="accent-orange">Exposure</span></h1>
+        <p class="slide-subtitle">Creating real-world pathways — internships, live projects, NGO collaborations — so URJA membership means tangible career access.</p>
+        <div class="slide-body">
+          <div class="slide-col">
+            <div class="detail-block">
+              <div class="detail-label">THE PROBLEM</div>
+              <p>Students crave real experience — but most society memberships don't provide it. URJA can bridge this gap by leveraging its network to unlock meaningful industry and NGO access.</p>
+            </div>
+            <div class="detail-block">
+              <div class="detail-label">THE APPROACH</div>
+              <p>Partner with startups, NGOs, and industry contacts to offer internship referrals, live project placements, and collaborative campaigns exclusively accessible through URJA membership.</p>
+            </div>
+          </div>
+          <div class="slide-col">
+            <div class="metrics-grid">
+              <div class="metric-box">
+                <div class="metric-num orange">Internships</div>
+                <div class="metric-lbl">Referral pipeline via URJA's network</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-num orange">NGO Tie-ups</div>
+                <div class="metric-lbl">Social impact projects with certification</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-num orange">Live Projects</div>
+                <div class="metric-lbl">Startup collaborations with real deliverables</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-num orange">Network</div>
+                <div class="metric-lbl">Exclusive access via URJA membership</div>
+              </div>
+            </div>
+            <div class="action-steps">
+              <div class="action-label">KEY ACTION STEPS</div>
+              <div class="action-item"><span class="a-dot orange-dot"></span>Map existing alumni & industry contacts</div>
+              <div class="action-item"><span class="a-dot orange-dot"></span>Formalize 3–5 NGO partnership agreements</div>
+              <div class="action-item"><span class="a-dot orange-dot"></span>Pitch to 5 startups for live project collab</div>
+              <div class="action-item"><span class="a-dot orange-dot"></span>Create member-facing "Opportunities Board"</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-outcome-bar orange-bar">
+          <span class="out-label">EXPECTED OUTCOME</span>
+          <span class="out-text">URJA membership becomes a career asset — giving students direct access to internships, meaningful impact work, and real professional experience.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 7: ACHIEVER UNITED 2027 ── -->
+    <section id="achieverUnited" class="achiever-section">
+      <div class="achiever-inner">
+
+        <div class="achiever-header">
+          <div class="achiever-eyebrow">
+            <span class="achiever-tag">URJA FLAGSHIP EVENT</span>
+          </div>
+          <h1 class="achiever-title">ACHIEVER <span class="achiever-year">UNITED</span></h1>
+          <div class="achiever-year-badge">2027</div>
+          <p class="achiever-subtitle">Our biggest stage yet — where industry icons, innovators, and achievers converge. We are building the guest list.</p>
+        </div>
+
+        <div class="achiever-hint">
+          <span class="hint-icon">👆</span>
+          <span>Hover to reveal</span>
+        </div>
+
+        <div class="personalities-row">
+
+          <div class="personality-card">
+            <div class="personality-img-wrap">
+              <img src="p1.png" alt="Yuvraj Singh" class="personality-img">
+              <div class="personality-mask"></div>
+              <div class="personality-glow"></div>
+            </div>
+            <div class="personality-info">
+              <div class="personality-question">?</div>
+              <div class="personality-reveal">
+                <div class="personality-name">YUVRAJ SINGH</div>
+                <div class="personality-role">Legendary Indian Cricketer</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="personality-card center-card">
+            <div class="personality-img-wrap">
+              <img src="p2.png" alt="S. Jaishankar" class="personality-img">
+              <div class="personality-mask"></div>
+              <div class="personality-glow"></div>
+            </div>
+            <div class="personality-info">
+              <div class="personality-question">?</div>
+              <div class="personality-reveal">
+                <div class="personality-name">S. JAISHANKAR</div>
+                <div class="personality-role">Minister of External Affairs of India</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="personality-card">
+            <div class="personality-img-wrap">
+              <img src="p3.png" alt="Bharat Chandak" class="personality-img">
+              <div class="personality-mask"></div>
+              <div class="personality-glow"></div>
+            </div>
+            <div class="personality-info">
+              <div class="personality-question">?</div>
+              <div class="personality-reveal">
+                <div class="personality-name">BHARAT CHANDAK</div>
+                <div class="personality-role">Popular Indian Singer</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="achiever-footer">
+          <div class="achiever-footer-line">
+            <span class="footer-tag">COMING SOON</span>
+            <span class="footer-dots"><span></span><span></span><span></span></span>
+            <span class="footer-text">Guest list drops when you least expect it.</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div><!-- /mainContent -->
 
   <script src="script.js"></script>
 </body>

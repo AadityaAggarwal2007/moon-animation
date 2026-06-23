@@ -1,16 +1,16 @@
 /**
  * URJA UPGRADE — ROCKET ANIMATION CONTROLLER
  *
- * Rocket rises with pure acceleration (t^2.8), always getting faster.
- * Width grows in sync with position (tied to same accel curve).
- * Flames, embers, halo, chevrons fire as time-based triggers.
+ * After animation: enables body scroll, shows fixed space background
+ * and main content. All "slides" are now scrollable sections.
  */
 (() => {
   'use strict';
 
   /* ── DOM ─────────────────────────────── */
   const launchScreen   = document.getElementById('launchScreen');
-  const initiativesSrc = document.getElementById('initiativesScreen');
+  const mainContent    = document.getElementById('mainContent');
+  const spaceBg        = document.getElementById('spaceBg');
   const rocketWrap     = document.getElementById('rocketWrap');
   const statusText     = document.getElementById('statusText');
   const progFill       = document.getElementById('progFill');
@@ -26,31 +26,23 @@
   function computeSizes() {
     VH   = window.innerHeight;
     VW   = window.innerWidth;
-    // SVG viewBox is 100×260, AR = 2.6
-    // Keep rocket height ≤ 78% viewport height
     PEAK = Math.min(VH * 0.78 / 2.6, VW * 0.24);
-    TINY = PEAK * 0.20;  // starts very small — growth is dramatic
+    TINY = PEAK * 0.20;
   }
 
   /* ── Math helpers ────────────────────── */
   const clamp = (v,lo,hi) => Math.max(lo, Math.min(hi, v));
   const lerp  = (a,b,t)   => a + (b-a)*t;
   const pct   = (t,t0,t1) => clamp((t-t0)/(t1-t0), 0, 1);
-  // Pure acceleration — speed only ever increases
   const accel = t => Math.pow(t, 2.5);
 
-  /* ── Position & size each frame ─────── */
-  // Width grows LINEARLY with time — steady visible expansion throughout
-  // Position accelerates (accel) but size grows at constant rate (t)
   function getWidth(t)  { return lerp(TINY, PEAK, t); }
   function getBottom(t) { return lerp(-PEAK * 2.6 * 0.5, VH + PEAK * 2.6, accel(t)); }
-  // ↑ starts with rocket half-visible at bottom, ends well above viewport
 
   function applyRocket(t) {
     const w  = getWidth(t);
     const b  = getBottom(t);
     const op = t < 0.05 ? pct(t, 0, 0.05) : 1;
-
     rocketWrap.style.width   = w + 'px';
     rocketWrap.style.height  = (w * 2.6) + 'px';
     rocketWrap.style.left    = (VW / 2 - w / 2) + 'px';
@@ -97,7 +89,7 @@
       const e = document.createElement('div');
       e.className = 'ember';
       const size = 2 + Math.random() * 5;
-      const angle = (Math.random() * 180) + 90; // downward spread
+      const angle = (Math.random() * 180) + 90;
       const dist  = 30 + Math.random() * 80;
       const rad   = angle * Math.PI / 180;
       const ex    = Math.cos(rad) * dist;
@@ -117,7 +109,7 @@
     }, rate);
   }
 
-  /* ── Screen shiver (continuous) ──────── */
+  /* ── Screen shiver ───────────────────── */
   let screenShiverTimer = null;
   function setScreenShiver(amp) {
     clearInterval(screenShiverTimer); screenShiverTimer = null;
@@ -129,7 +121,6 @@
     }, 45);
   }
 
-  /* ── Screen shake (one-shot big rumble) ── */
   function shakeScreen(amp, ms) {
     const end = performance.now() + ms;
     (function loop(now) {
@@ -238,28 +229,24 @@
 
     applyRocket(t);
 
-    /* Speed lines start */
     if(t>0.02) once('lines',()=>setLines(90));
 
-    /* Charging phase — flames, mild screen vibration */
     if(t>0.20) once('charge',()=>{
       rocketWrap.classList.add('charging');
       startHum();
       setLines(55);
       setShiver(3);
       setEmbers(120);
-      setScreenShiver(1.5);  // barely-there engine rumble
+      setScreenShiver(1.5);
       statusText.textContent='IGNITION SEQUENCE ACTIVE — ENGINES CHARGING...';
       statusText.style.color='#00ffd5';
     });
 
-    /* Progress 0→70% */
     if(t>0.20 && t<0.60){
       const p=pct(t,0.20,0.60)*70;
       setProgress(p); pitchHum(p/100);
     }
 
-    /* Overclock — intense screen shake visible with rocket */
     if(t>0.60) once('over',()=>{
       rocketWrap.classList.remove('charging');
       rocketWrap.classList.add('overclock');
@@ -268,41 +255,47 @@
       setLines(14);
       setShiver(10);
       setEmbers(40);
-      setScreenShiver(5);   // intense engine vibration
+      setScreenShiver(5);
       statusText.textContent='FULL THRUST — LAUNCH IN PROGRESS';
       statusText.style.color='#ff5500';
     });
 
-    /* Progress 70→100% */
     if(t>0.60 && t<0.78){
       const p=70+pct(t,0.60,0.78)*30;
       setProgress(p); pitchHum(p/100);
     }
 
-    /* Launch — stop continuous shiver, do big one-shot rumble */
     if(t>0.78) once('launch',()=>{
       stopHum(); playWhoosh();
       setShiver(0); setLines(6);
-      setScreenShiver(0);          // stop continuous
-      shakeScreen(20, 600);        // big dramatic shake
+      setScreenShiver(0);
+      shakeScreen(20, 600);
       setProgress(100);
       statusText.textContent='LAUNCH CONFIRMED.';
       statusText.style.color='#ffffff';
     });
 
-    /* (no separate shake trigger — it fires inside launch now) */
-
     if(t>=1.0){
       rafId=null;
       setLines(0); setShiver(0); setEmbers(0); setScreenShiver(0);
-      launchScreen.style.display='none';
-      initiativesSrc.classList.remove('hidden');
-      requestAnimationFrame(()=>initiativesSrc.classList.add('visible'));
+
+      /* ── Show main content ── */
+      launchScreen.style.display = 'none';
+
+      // Enable body scrolling
+      document.body.style.overflowY = 'auto';
+
+      // Show fixed space background (moon + stars)
+      spaceBg.classList.remove('hidden');
+
+      // Show main content (overview + slides)
+      mainContent.classList.remove('hidden');
+
       playChime();
       return;
     }
 
-    rafId=requestAnimationFrame(tick);
+    rafId = requestAnimationFrame(tick);
   }
 
   /* ── Boot ────────────────────────────── */
@@ -312,25 +305,50 @@
     if(rafId) cancelAnimationFrame(rafId);
     setLines(0); setShiver(0); setEmbers(0); setScreenShiver(0); stopHum();
 
-    launchScreen.style.display  ='';
-    launchScreen.style.transform='';
-    initiativesSrc.classList.remove('visible');
-    initiativesSrc.classList.add('hidden');
+    // Hide content, disable scroll
+    document.body.style.overflowY = 'hidden';
+    window.scrollTo(0, 0);
 
-    rocketWrap.className       ='rocket-wrap';
-    rocketWrap.style.opacity   ='0';
-    rocketWrap.style.marginLeft='0px';
-    rocketWrap.style.marginTop ='0px';
+    launchScreen.style.display  = '';
+    launchScreen.style.transform= '';
+
+    spaceBg.classList.add('hidden');
+    mainContent.classList.add('hidden');
+
+    rocketWrap.className       = 'rocket-wrap';
+    rocketWrap.style.opacity   = '0';
+    rocketWrap.style.marginLeft= '0px';
+    rocketWrap.style.marginTop = '0px';
 
     progFill.style.width='0%'; progFill.classList.remove('hot');
     watermark.textContent='00'; watermark.classList.remove('hot');
     statusText.textContent='SYSTEM INITIALIZING...'; statusText.style.color='';
     exhaustPart.innerHTML='';
 
-    rafId=requestAnimationFrame(tick);
+    rafId = requestAnimationFrame(tick);
   }
 
-  window.addEventListener('resize', boot);
+  window.addEventListener('resize', () => { computeSizes(); });
   boot();
   replayBtn.addEventListener('click', boot);
+
+  /* ── Card click → scroll to section ── */
+  document.querySelectorAll('.card[data-slide]').forEach(card => {
+    card.addEventListener('click', () => {
+      const num = card.getAttribute('data-slide');
+      goToSlide(parseInt(num));
+    });
+  });
+
 })();
+
+/* ── Global navigation helpers ── */
+function goToSlide(num) {
+  const el = document.getElementById('slide-' + num);
+  if (el) el.scrollIntoView({ behavior: 'smooth' });
+}
+
+function scrollToOverview() {
+  const el = document.getElementById('overviewSection');
+  if (el) el.scrollIntoView({ behavior: 'smooth' });
+}
