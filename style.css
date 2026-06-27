@@ -355,8 +355,10 @@ body {
    MAIN CONTENT — scrollable, shown after animation
    ============================================= */
 .main-content {
+  display: block;
   position: relative;
   z-index: 10;
+  width: 100%;
 }
 
 /* ── OVERVIEW SECTION ── */
@@ -531,7 +533,9 @@ body {
    DETAIL SLIDES — normal scrollable sections
    ============================================= */
 .detail-slide {
+  display: block;
   position: relative;
+  width: 100%;
   min-height: 100vh;
   background: transparent; /* stars/moon from fixed spaceBg show through */
   border-top: 1px solid rgba(255,255,255,0.05);
